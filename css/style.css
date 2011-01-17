@@ -1,0 +1,353 @@
+/**
+ * C O O L W O R L D S . NET
+ *
+ * Script Name: coolContact - Contact Form
+ * Version: 1.1
+ * Author: Maher Salam
+ * Author URI: http://www.coolworlds.net 
+ */
+
+/* Reset */
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td
+{
+	background:transparent;
+	border:0;
+	font-size:100%;
+	margin:0;
+	outline:0;
+	padding:0;
+	vertical-align:baseline
+}
+
+/* End - Reset */
+body
+{
+	background-color:#e8e8e8;
+	font-size:62.5%;
+	line-height:1
+}
+
+ol,ul
+{
+	list-style:none
+}
+
+#wrapper
+{
+	margin:120px auto 0;
+	width:601px
+}
+
+/* Tipsy Tootltip */
+
+.tipsy
+{
+	background-image:url(../img/tipsy.gif);
+	background-repeat:no-repeat;
+	filter: alpha(opacity=80);
+	font:1.2em Tahoma;
+	opacity:0.8;
+	padding:5px
+}
+
+.tipsy-inner
+{
+	background-color:#000;
+	color:#FFF;
+	max-width:200px;
+	padding:5px 8px 4px;
+	text-align:center
+}
+
+.tipsy-inner
+{
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+}
+.tipsy-north
+{
+	background-position:top center
+}
+
+.tipsy-south
+{
+	background-position:bottom center
+}
+
+.tipsy-east
+{
+	background-position:right center
+}
+
+.tipsy-west
+{
+	background-position:left center
+}
+
+/*
+End - Tipsy Tootltip
+
+
+Content Wrapper*/
+#content-top
+{
+	background:url(../img/top-border.png) no-repeat;
+	height:5px;
+	margin-right:27px;
+	overflow:hidden;
+	width:548px
+}
+
+#content-bottom
+{
+	background:url(../img/bottom-border.png) no-repeat;
+	height:63px;
+	width:601px
+}
+
+#content
+{
+	background:#fff;
+	border-left:1px solid #c7c7c7;
+	border-right:1px solid #c7c7c7;
+	margin-right:27px;
+	padding:20px 0 10px;
+	width:546px
+}
+
+/*
+End - Content Wrapper
+
+
+The Badge*/
+#badge
+{
+	background-color:#e5e5e5;
+	height:54px;
+	position:relative;
+	width:174px
+}
+
+#badge .wrapper
+{
+	background:#2474d1 url(../img/title-gradient.gif) repeat-x;
+	height:50px;
+	line-height:50px;
+	position:absolute;
+	right:-14px;
+	width:192px
+}
+
+#badge .corner
+{
+	background:url(../img/title-corner.gif) no-repeat;
+	bottom:-5px;
+	height:9px;
+	overflow:hidden;
+	position:absolute;
+	right:-14px;
+	width:14px
+}
+
+#badge h1
+{
+	color:#fff;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:3.2em;
+	margin-right:38px;
+	text-shadow:0 1px 0 #000
+}
+
+/*
+End - The Badge
+
+
+The Contact Form*/
+#contact
+{
+	margin:30px 24px 0
+}
+
+#contact div
+{
+	margin:14px 0
+}
+
+#contact p
+{
+	display:inline;
+	float:right;
+	padding:8px 0 0 15px;
+	position:relative;
+	text-align:left;
+	width:54px
+}
+
+#contact label
+{
+	color:#7c7c7c;
+	cursor:pointer;
+	font-size:1.8em
+}
+
+#contact button
+{
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	background:#0d55a7 url(../img/button-gradient.gif) repeat-x;
+	border:1px solid #2070ca;
+	color:#fff;
+	cursor:pointer;
+	display:inline;
+	float:left;
+	font:1.6em Arial, Helvetica, sans-serif;
+	font-weight:700;
+	outline:none;
+	padding:5px;
+	text-shadow:0 1px 0 #000
+}
+
+#contact button:active
+{
+	background:#0d55a7 none
+}
+
+#contact acronym
+{
+	border-bottom:1px gray dotted;
+	cursor:help;
+	float:left;
+	padding-bottom:2px
+}
+
+input,textarea
+{
+	-moz-box-shadow:0 0 3px rgba(0,0,0,0.1);
+	-webkit-box-shadow:0 0 3px rgba(0,0,0,0.1);
+	background-color:#f9f9f9;
+	border:1px solid #e9e9e9;
+	box-shadow:0 0 3px rgba(0,0,0,0.1);
+	color:#7c7c7c;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:1.8em;
+	outline:none;
+	padding:8px 10px
+}
+
+input:focus,textarea:focus
+{
+	-moz-box-shadow:0 0 5px rgba(0,0,0,0.2);
+	-webkit-box-shadow:0 0 5px rgba(0,0,0,0.2);
+	box-shadow:0 0 5px rgba(0,0,0,0.2)
+}
+
+input:focus,textarea:focus,.focus
+{
+	background-color:#efefef;
+	border:1px solid #dddbdb;
+	color:#000
+}
+
+input
+{
+	width:294px
+}
+
+input.security
+{
+	width:80px
+}
+
+input.email
+{
+	direction:ltr
+}
+
+textarea
+{
+	overflow:auto;
+	width:407px !important;
+	width: 404px
+}
+
+input.error,textarea.error
+{
+	border:1px solid #ed6363 !important
+}
+
+/*
+End - The Contact Form
+
+
+Success Page*/
+.loading
+{
+	padding:50px 270px 50px 0
+}
+
+.success img
+{
+	display:inline;
+	float:right;
+	height:88px;
+	margin:40px 40px 0 0;
+	width:102px
+}
+
+.success h2
+{
+	color:#717171;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:2.8em;
+	margin:0 177px 0 0;
+	padding-top:50px
+}
+
+.success p
+{
+	color:#b9b9b9;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:1.8em;
+	margin:20px 177px 50px 0
+}
+
+.success a
+{
+	border-bottom:1px dotted #b9b9b9;
+	color:#b9b9b9;
+	padding:3px;
+	text-decoration:none
+}
+
+.success a:hover
+{
+	border:none;
+	color:#717171
+}
+
+/*
+End - Success Page
+
+
+The Rights*/
+#rights
+{
+	color:#CACACA;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:1em;
+	padding-top:32px;
+	text-align:center
+}
+
+#rights a
+{
+	border-bottom:1px dotted #9b9b9b;
+	color:#CACACA;
+	text-decoration:none
+}
+
+#rights a:hover
+{
+	border-bottom:1px solid #9b9b9b;
+	color:#9b9b9b
+}
