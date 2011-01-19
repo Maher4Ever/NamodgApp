@@ -204,8 +204,8 @@ jQuery.extend(jQuery.easing,{easeOutBack:function(f,a,b,c,d,e){if(e==undefined)e
                         catch(e)
                         {
                             /*
-                             * Fix a bug where missing headers in the json data makes the jQuery
-                             * parseJSON() throw an error, by using the old eval() - slower though!
+                             * Fix a bug where strange unicode chars in the json data makes the jQuery
+                             * parseJSON() throw an error (only on some servers), by using the old eval() - slower though!
                              */
                             data = eval( "(" + data + ")" );
                         }
