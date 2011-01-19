@@ -23,7 +23,7 @@ abstract class namodg {
     /**
      * @var float The current version of Namodg
      */
-    public $version = 1.3.1;
+    public $version = '1.3.1';
 
     /**
      * @var string Include path for all core files
