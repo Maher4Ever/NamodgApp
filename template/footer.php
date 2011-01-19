@@ -4,7 +4,7 @@
  * Namodg - Ajax contact form
  *
  * @author Maher Salam <admin@namodg.com>
- * @version 1.3
+ * @version 1.3.1
  * @copyright Copyright (c) 2010, Maher Salam
  *
  * Dual licensed under the MIT and GPL licenses:
@@ -26,7 +26,7 @@
 	<p id="rights">
 		<a href="http://coolworlds.net">
 			<img id='coolworlds-logo' src="images/coolworlds-logo.png" alt="coolworlds.net" title="coolworlds.net">
-		</a> - Powered by <a href="http://namodg.com" title="الموقع الرسمي للحصول على نسختك الخاصة من 'نموذج' - مجاناً">namodg 1.3</a>. All rights reserved.
+		</a> - Powered by <a href="http://namodg.com" title="الموقع الرسمي للحصول على نسختك الخاصة من 'نموذج' - مجاناً">namodg 1.3.1</a>. All rights reserved.
 	</p>
 	<?php 
 	#############################################################

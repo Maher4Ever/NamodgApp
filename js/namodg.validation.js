@@ -5,7 +5,7 @@
  * Namodg ajax validation - Adapted from http://webcloud.se/log/Form-validation-with-jQuery-from-scratch/
  *
  * @author Maher Salam <admin@namodg.com>
- * @version 1.3
+ * @version 1.3.1
  * @copyright Copyright (c) 2010, Maher Salam
  *
  * Dual licensed under the MIT and GPL licenses:
