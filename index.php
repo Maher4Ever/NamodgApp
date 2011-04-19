@@ -61,7 +61,7 @@ $form->addNumberField('الرقم', array(
  */
 $form->addSelect('الغرض', array(
     'required' => true,
-    'id' => 'porpuse',
+    'id' => 'purpose',
     'options' => array('اتصال عام', 'إبلاغ عن مشكلة', 'طلب وضع إعلان'),
     'default' => 'الرجاء الإختيار',
     'label' => 'الغرض من الاتصال :',
@@ -112,10 +112,10 @@ $tpl = new RainTPL();
 /**
  * Configure RainTPL
  *
- * @see http://www.raintpl.com/Documentation/Documentation-for-PHP-developers/Configuration/
+ * @see http://www.raintpl.com/Documentation/Documentation-for-PHP-developers/Methods/Configure/
  */
-RainTPL::$tpl_dir = 'templates/air/';
-RainTPL::$cache_dir = 'cache/';
+RainTPL::configure('tpl_dir', 'templates/air/');
+RainTPL::configure('cache_dir', 'cache/');
 
 /**
  * Assign some variables

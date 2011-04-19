@@ -53,10 +53,10 @@ $tpl = new RainTPL();
 /**
  * Configure RainTPL
  *
- * @see http://www.raintpl.com/Documentation/Documentation-for-PHP-developers/Configuration/
+ * @see http://www.raintpl.com/Documentation/Documentation-for-PHP-developers/Methods/Configure/
  */
-RainTPL::$tpl_dir = 'templates/air/';
-RainTPL::$cache_dir = 'cache/';
+RainTPL::configure('tpl_dir', 'templates/air/');
+RainTPL::configure('cache_dir', 'cache/');
 
 /**
  * Assign some variables
@@ -114,7 +114,7 @@ if ( ! $form->isDataValid() ) {
         $tpl->assign('selected', $form->getPhrase('misc', 'selected'));
         $tpl->assign('form_close', $form->getClosingHTML());
 
-        $tpl->draw('validation_errors');
+        $tpl->draw('validation_failed');
         exit;
 
     }
