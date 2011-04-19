@@ -564,7 +564,7 @@ class RainTPL{
 			
 			if( in_array( "a", self::$path_replace_list ) ){
 				$exp = array_merge( $exp , array( '/<a(.*?)href=(?:")http\:\/\/([^"]+?)(?:")/i', '/<a(.*?)href="(.*?)"/' ) );
-				$sub = array_merge( $sub , array( '<a$1href=@http://$2@',  '<a$1href="' . self::$base_url . '$2"' ) );
+				$sub = array_merge( $sub , array( '<a$1href="http://$2"',  '<a$1href="' . self::$base_url . '$2"' ) );
 			}
 
 			return preg_replace( $exp, $sub, $html );

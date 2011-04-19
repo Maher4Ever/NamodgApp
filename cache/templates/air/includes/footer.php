@@ -7,9 +7,9 @@
     #############################################################
     !-->
     <p id="rights">
-            <a href=@http://coolworlds.net@>
+            <a href="http://coolworlds.net">
                     <img id='coolworlds-logo' src="templates/air/includes/../images/coolworlds-logo.png" alt="coolworlds.net" title="coolworlds.net">
-            </a> - Powered by <a href=@http://namodg.com@ title="الموقع الرسمي للحصول على نسختك الخاصة من 'نموذج' - مجاناً">namodg <?php echo $version;?></a>. All rights reserved.
+            </a> - Powered by <a href="http://namodg.com" title="الموقع الرسمي للحصول على نسختك الخاصة من 'نموذج' - مجاناً">namodg <?php echo $version;?></a>. All rights reserved.
     </p>
     <!--
     #############################################################
