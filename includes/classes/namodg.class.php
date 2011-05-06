@@ -113,7 +113,7 @@ class Namodg {
         $method = $GLOBALS['_' . $this->_config['method']];
 
         // Stop if there is no request or if the request doesn't contain namodg data
-        if ( ! $method && ! $method['namodg_fields'] ) {
+        if ( ! $method && ! isset($method['namodg_fields']) ) {
             return false;
         }
 
@@ -132,7 +132,10 @@ class Namodg {
             }
             $this->_fields = $fields;
         }
-
+        
+        // Remove the namodg fields container
+        unset($method['namodg_fields']);
+        
         // Store the data from the request to be used later
         $this->_addFieldsDataFromRequest($method);
         
@@ -167,7 +170,7 @@ class Namodg {
      * @return boolean
      */
     public function isDataValid() {
-        return ( count($this->_errors['validation']) === 0 ) ? true : false;
+        return ( isset($this->_errors['validation']) && count($this->_errors['validation']) !== 0 ) ? false : true;
     }
 
     /**
@@ -216,7 +219,7 @@ class Namodg {
             $fields[$i]['field_type'] = $field->getType();
             $fields[$i]['value'] = $field->getValue();
 
-            if ( $withErrors && $this->_errors['validation'][$field->getName()] ) {
+            if ( $withErrors && isset($this->_errors['validation'][$field->getName()]) ) {
                $fields[$i]['validation_error'] =  $this->_errors['validation'][$field->getName()]['error'];
             }
 
@@ -467,12 +470,13 @@ class Namodg {
       if (empty($this->_config['key'])) {
           return $str;
       }
-
+      
+      $result = '';      
       for($i=0, $length = strlen($str); $i<$length; $i++) {
          $char = substr($str, $i, 1);
          $keychar = substr($this->_config['key'], ($i % strlen($this->_config['key']))-1, 1);
          $char = chr(ord($char)+ord($keychar));
-         $result.=$char;
+         $result.= $char;
       }
       return base64_encode($result);
     }
@@ -549,13 +553,13 @@ class Namodg {
      * @param string $error
      */
     private function _addValidationError($fieldName, $label, $error) {
-        if ( ! is_array($this->_errors['validation'])) {
+        if ( ! isset($this->_errors['validation']) ) {
             $this->_errors['validation'] = array();
         }
-
+        
         $this->_errors['validation'][$fieldName] = array(
             'fieldLabel' => $label,
-            'error' => ( $this->_phrases['validation'][$fieldName][$error] && ! empty($this->_phrases['validation'][$fieldName][$error]) ) ? $this->_phrases['validation'][$fieldName][$error] : $this->_phrases['validation'][$error]
+            'error' => ( isset($this->_phrases['validation'][$fieldName][$error]) && ! empty($this->_phrases['validation'][$fieldName][$error]) ) ? $this->_phrases['validation'][$fieldName][$error] : $this->_phrases['validation'][$error]
         );
     }
 }
