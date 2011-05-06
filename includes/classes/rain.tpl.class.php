@@ -587,7 +587,6 @@ class RainTPL{
 			}
 
 			if( in_array( "a", self::$path_replace_list ) ){
-<<<<<<< HEAD
 				$exp = array_merge( $exp , array( '/<a(.*?)href=(?:")(http|https)\:\/\/([^"]+?)(?:")/i', '/<a(.*?)href="(.*?)"/', '/<a(.*?)href=(?:\@)([^"]+?)(?:\@)/i'  ) );
 				$sub = array_merge( $sub , array( '<a$1href=@$2://$3@', '<a$1href="' . self::$base_url . '$2"', '<a$1href="$2"' ) );
 			}
@@ -595,10 +594,6 @@ class RainTPL{
 			if( in_array( "input", self::$path_replace_list ) ){
 				$exp = array_merge( $exp , array( '/<input(.*?)src=(?:")(http|https)\:\/\/([^"]+?)(?:")/i', '/<input(.*?)src=(?:")([^"]+?)#(?:")/i', '/<input(.*?)src="(.*?)"/', '/<input(.*?)src=(?:\@)([^"]+?)(?:\@)/i' ) );
 				$sub = array_merge( $sub , array( '<input$1src=@$2://$3@', '<input$1src=@$2@', '<input$1src="' . self::$base_url . self::$tpl_dir . $tpl_basedir . '$2"', '<input$1src="$2"' ) );
-=======
-				$exp = array_merge( $exp , array( '/<a(.*?)href=(?:")http\:\/\/([^"]+?)(?:")/i', '/<a(.*?)href="(.*?)"/' ) );
-				$sub = array_merge( $sub , array( '<a$1href=@http://$2@',  '<a$1href="' . self::$base_url . '$2"' ) );
->>>>>>> parent of 5cb993a... - Temporarily changed the core of RainTPL to fix a strange error until we report its developer about this.
 			}
 
 			return preg_replace( $exp, $sub, $html );
