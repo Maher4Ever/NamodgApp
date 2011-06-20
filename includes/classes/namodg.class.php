@@ -63,34 +63,18 @@ class Namodg {
      */
     public function __construct($config = array()) {
 
-        // Stop if the configurations are not passed in an array
+        // Stop if the configurations are not an array
         if ( ! is_array($config) ) {
             // Default the language to arabic because there is no config
-            $this->_fillPhrases('ar', $configError = true);
+            $this->_fillPhrases();
             $this->addFatalError('config_not_array');
             return;
         }
         
         $this->_config = $this->_replaceDefalutConfig($config);
-
-        $this->_fillPhrases( $this->_config['language']);
         
-        if ( empty($this->_config['key']) ) {
-            $this->addFatalError('no_key');
-        }
-
-        if ( strtoupper($this->_config['method']) !== 'POST' && strtoupper($this->_config['method']) !== 'GET' ) {
-            $this->addFatalError('method_not_valid');
-            $this->_config['method'] = 'POST';
-        }
-
-        if ( empty($this->_config['email']) || ! filter_var($this->_config['email'], FILTER_VALIDATE_EMAIL)) {
-            $this->addFatalError('receipt_email_not_valid');
-        }
-
-        if ( ! function_exists('mail') || ! is_callable('mail') ) {
-            $this->addFatalError('mail_function_disabled');
-        }
+        $this->_fillPhrases( $this->_config['language'] );
+        $this->_validateConfig();
     }
 
     /**
@@ -394,7 +378,7 @@ class Namodg {
             'class' => NULL,
             'method' => 'POST',
             'url' => $_SERVER['SCRIPT_NAME'],
-            'lang' => 'ar',
+            'language' => 'ar',
             'email' => NULL
         );
 
@@ -404,33 +388,50 @@ class Namodg {
     }
 
     /**
+     * Validates the configurations array
+     * 
+     */
+    private function _validateConfig() {
+        
+        if ( empty($this->_config['key']) ) {
+            $this->addFatalError('no_key');
+        }
+
+        if ( strtoupper($this->_config['method']) !== 'POST' && strtoupper($this->_config['method']) !== 'GET' ) {
+            $this->addFatalError('method_not_valid');
+        }
+
+        if ( empty($this->_config['email']) || ! filter_var($this->_config['email'], FILTER_VALIDATE_EMAIL)) {
+            $this->addFatalError('receipt_email_not_valid');
+        }
+
+        if ( ! function_exists('mail') || ! is_callable('mail') ) {
+            $this->addFatalError('mail_function_disabled');
+        }
+        
+    }
+    
+    /**
      * Fill the phrases array
      *
      * @param string $langId
      * @param boolean $configError
      */
-    private function _fillPhrases($langId, $configError = false) {
+    private function _fillPhrases($langId = '') {
+        
         $lang = new NamodgLanguage($langId);
 
-        $lang->parseArrayFromFolder('phrase', dirname(__FILE__) . '/../../languages');
-
-        $this->_phrases = $lang->getPhrases();
-
-        /**
-         * this stops the extra checks when there is a config error
-         * @todo Beter handeling for config error
-         */
-        if ($configError) {
-            return;
-        }
-
         if ( ! $lang->isCodeValid() ) {
-            $this->addFatalError('language_code_is_not_2');
+            $this->addFatalError('language_code_length_not_valid');
         }
 
         if ( ! $lang->doesFileExsists() ) {
             $this->addFatalError('language_file_not_found');
         }
+        
+        $lang->parseArrayFromFolder('phrase', dirname(__FILE__) . '/../../languages');
+
+        $this->_phrases = $lang->getPhrases();
     }
 
     /**

@@ -107,7 +107,7 @@ if ( ! $form->isDataValid() ) {
     // If not, it's a normal request. In that case, display the form with the errors
     } else {
 
-       $tpl->assign('title', $config['home_title']);
+        $tpl->assign('title', $config['home_title']);
 
         $tpl->assign('form_open', $form->getOpeningHTML());
         $tpl->assign('fields', $form->getFieldsWithErrorsAsArray());
@@ -138,7 +138,7 @@ $sentCorrectly = $form->sendUsingTemplate( $tpl->draw('email', true) );
 /**
  * If something went wrong while sending, show an error message and exit
  */
-if ( ! $sentCorrectly) {
+if ( ! $sentCorrectly ) {
     echo getFailMessage();
     exit;
 }
@@ -154,4 +154,3 @@ $tpl->assign('message', $form->getPhrase('response', 'success_message_body'));
 $tpl->assign('button', array('text' => $form->getPhrase('misc', 'new_message'), 'url' => 'index.php'));
 
 $tpl->draw('sending_succeeded');
-exit;

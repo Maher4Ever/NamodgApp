@@ -75,12 +75,12 @@ abstract class NamodgField implements NamodgDataHolder {
     private $_defaultOptions = array();
 
     /**
-     * Field error type
+     * Field validation error
      *
      * @see NamodgField::_setValidationError()
      * @var string
      */
-    private $_errorType = NULL;
+    private $_validatonError = NULL;
 
     /**
      * Initialize the field object
@@ -98,7 +98,7 @@ abstract class NamodgField implements NamodgDataHolder {
             'title' => NULL,
             'send' => TRUE
         ));
-        $this->_options = $this->_replaceDefaultOptions($options);
+        $this->_setOptions($options);
     }
 
     /**
@@ -164,7 +164,7 @@ abstract class NamodgField implements NamodgDataHolder {
      * @param $errorID
      */
     protected function _setValidationError($errorID) {
-        $this->_errorType = $errorID;
+        $this->_validatonError = $errorID;
     }
 
     /**
@@ -173,7 +173,7 @@ abstract class NamodgField implements NamodgDataHolder {
      * @return string
      */
     public function getValidationError() {
-        return $this->_errorType;
+        return $this->_validatonError;
     }
 
     /**
@@ -193,8 +193,8 @@ abstract class NamodgField implements NamodgDataHolder {
      * @param array $options
      * @return array
      */
-    private function _replaceDefaultOptions($options) {
-        return ( empty($options) ) ? $this->_defaultOptions : array_merge($this->_defaultOptions, $options);
+    private function _setOptions($options) {
+        $this->_options = empty($options) ? $this->_defaultOptions : array_merge($this->_defaultOptions, $options);
     }
 
 }

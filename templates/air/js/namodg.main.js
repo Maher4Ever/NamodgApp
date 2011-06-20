@@ -485,13 +485,13 @@
             // Check if the parameter is an array
             if ($.isArray(img)) {
 
-                // iterate over all array's element
+                // iterate over all array's elements
                 for (; i < len; i += 1) {
 
                     // Create a new img object
                     tmpImg = new Image();
 
-                    // Add the source to that object so the browser will download it
+                    // Add the source to that object to make the browser download it
                     tmpImg.src = img[i];
                 }
 
@@ -501,7 +501,7 @@
                 // Create a new img object
                 tmpImg = new Image();
 
-                // Add the source to that object so the browser will download it
+                // Add the source to that object to make the browser download it
                 tmpImg.src = img;
 
             }

@@ -27,7 +27,7 @@ class NamodgLanguage {
      * @see NamodgLanguage::isCodeVlid()
      * @var string only two chars!
      */
-    private $_language = NULL;
+    private $_language = 'ar';
 
     /**
      * The path to the translation files
@@ -49,9 +49,11 @@ class NamodgLanguage {
      *
      * @param string $lang
      */
-    public function __construct($lang) {
+    public function __construct($lang) { 
         if ( $this->isCodeValid($lang) ) {
             $this->_language = (string)$lang;
+        } else {
+            $this->_language = 'ar';
         }
     }
 
@@ -66,18 +68,19 @@ class NamodgLanguage {
         $this->_dir = $folder . DIRECTORY_SEPARATOR;
 
         $file = $this->_dir . $this->_language . '.php';
+        
+        if ( $this->doesFileExsists() ) {
+            
+            include $file;
 
-        if ( ! $this->doesFileExsists() ) {
-            $file = $this->_dir . 'ar.php';
+            $phrases = $$arrayName;
+
+            if (is_array($phrases)) {
+                $this->_phrases = $phrases;
+            }
+            
         }
 
-        include $file;
-
-        $phrases = $$arrayName;
-
-        if (is_array($phrases)) {
-            $this->_phrases = $phrases;
-        }
     }
 
     /**
@@ -86,8 +89,9 @@ class NamodgLanguage {
      * @param string $lang
      * @return boolean
      */
-    public function isCodeValid($lang = '') {
-        if ( empty($lang) ) {
+    public function isCodeValid($lang = NULL) {
+        
+        if ( is_null($lang) ) {
             $lang = $this->_language;
         }
 

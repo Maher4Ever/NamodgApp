@@ -57,7 +57,7 @@ $form->addNumberField('الرقم', array(
 ));
 
 /**
- * Add a select field
+ * Add a select dropdown
  */
 $form->addSelect('الغرض', array(
     'required' => true,
