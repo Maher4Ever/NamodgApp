@@ -175,7 +175,13 @@ class NamodgMailer {
 
         $this->_makeHeaders();
 
-        return @mail($this->_to, $this->_subject, $this->_body['plain'] . PHP_EOL . $this->_body['html'], $this->_headers['all']);
+        $status = @mail($this->_to, $this->_subject, $this->_body['plain'] . PHP_EOL . $this->_body['html'], $this->_headers['all']);
+        
+        if ( $status === false ) {
+            error_log('Namodg Mailer: mail() function is activated but unable to send emails. Please consult your server admins about this problem', 0);
+        }
+        
+        return $status;
     }
 
     /**

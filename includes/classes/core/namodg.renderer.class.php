@@ -91,7 +91,7 @@ abstract class NamodgRenderer implements Renderable {
      * @return string
      */
     public function getAttr($attrID) {
-        return $this->_attrs[$attrID];
+        return isset($this->_attrs[$attrID]) ? $this->_attrs[$attrID] : NULL;
     }
 
     /**
@@ -118,7 +118,7 @@ abstract class NamodgRenderer implements Renderable {
      * @param string $class
      */
     public function addClass($class) {
-        if ($this->_attrs['class']) {
+        if ( isset($this->_attrs['class']) ) {
           $this->_attrs['class'] .= ' ' . $class;
         } else {
             $this->addAttr('class', $class);
