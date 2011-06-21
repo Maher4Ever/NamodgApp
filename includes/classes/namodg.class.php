@@ -275,11 +275,16 @@ class Namodg {
      * @return array
      */
     public function getFatalErrors() {
-        // Late checkings - after adding the fields
+        
+// Late checkings - after adding the fields
         if ( $this->_config['replay_to_field_name'] && !empty($this->_config['replay_to_field_name']) && !array_key_exists($this->_config['replay_to_field_name'], $this->_fields) ) {
             $this->addFatalError('reply_to_field_name_not_valid');
         }
-
+        
+        if ( ! isset ($this->_errors['fatal']) ) {
+            $this->_errors['fatal'] = array();
+        }
+        
         return $this->_errors['fatal'];
     }
 
@@ -331,10 +336,9 @@ class Namodg {
      * @param string $id the error id
      */
     public function addFatalError($id) {
-        if ( ! is_array($this->_errors['fatal'])) {
+        if ( ! isset($this->_errors['fatal']) ) {
             $this->_errors['fatal'] = array();
         }
-
         array_push($this->_errors['fatal'], $this->_phrases['errors'][$id]);
     }
 
@@ -423,7 +427,12 @@ class Namodg {
     private function _fillPhrases($langId = '') {
         
         $lang = new NamodgLanguage($langId);
+        
+        $lang->parseArrayFromFolder('phrase', dirname(__FILE__) . '/../../languages');
 
+        $this->_phrases = $lang->getPhrases();
+        
+        // Wait untill the phrases are loaded before adding the errors!
         if ( ! $lang->isCodeValid() ) {
             $this->addFatalError('language_code_length_not_valid');
         }
@@ -431,10 +440,6 @@ class Namodg {
         if ( ! $lang->doesFileExsists() ) {
             $this->addFatalError('language_file_not_found');
         }
-        
-        $lang->parseArrayFromFolder('phrase', dirname(__FILE__) . '/../../languages');
-
-        $this->_phrases = $lang->getPhrases();
     }
 
     /**

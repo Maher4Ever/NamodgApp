@@ -22,7 +22,6 @@
 jQuery.extend(jQuery.easing,{easeOutBack:function(f,a,b,c,d,e){if(e==undefined)e=1.70158;return c*((a=a/d-1)*a*((e+1)*a+e)+1)+b},easeOutExpo:function(f,a,b,c,d){return a==d?b+c:c*(-Math.pow(2,-10*a/d)+1)+b}});
 
 // Namodg Select Styler - v1 - Maher Salam
-// Namodg Select Styler - v1 - Maher Salam
 (function ($) {
     $.fn.extend({
         styleNamodgSelects : function (options) {
@@ -103,8 +102,8 @@ jQuery.extend(jQuery.easing,{easeOutBack:function(f,a,b,c,d,e){if(e==undefined)e
                     // Add the offline div to the dom
                     .insertAfter($selectElem)
 
-                    // We can't use overflow:hidden to make the div contain it's floted children
-                    // because of the options' div, do we add a clear div
+                    // We can't use overflow:hidden to make the div contains it's floated children
+                    // because of the options' div, we add a clear div
                     .after('<div style="clear: both" />');
 
 

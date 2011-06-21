@@ -69,7 +69,7 @@ abstract class NamodgField implements NamodgDataHolder {
     /**
      * Defalut Field options
      *
-     * @see NamodgField::_addDefaultOptions()
+     * @see $this->_addDefaultOptions()
      * @var array
      */
     private $_defaultOptions = array();
@@ -77,7 +77,7 @@ abstract class NamodgField implements NamodgDataHolder {
     /**
      * Field validation error
      *
-     * @see NamodgField::_setValidationError()
+     * @see $this->_setValidationError()
      * @var string
      */
     private $_validatonError = NULL;
@@ -195,6 +195,9 @@ abstract class NamodgField implements NamodgDataHolder {
      */
     private function _setOptions($options) {
         $this->_options = empty($options) ? $this->_defaultOptions : array_merge($this->_defaultOptions, $options);
+        
+        // Remove the default options array so that when this object it serialized, it won't be in it!
+        unset ($this->_defaultOptions);
     }
 
 }
