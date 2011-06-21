@@ -29,11 +29,11 @@ interface NamodgDataHolder {
 
     public function getValue();
 
+    public function getCleanedValue();
+        
     public function getType();
 
     public function isValid();
-
-    public function getCleanedValue();
 
     public function getHTML();
 }
@@ -65,14 +65,6 @@ abstract class NamodgField implements NamodgDataHolder {
      * @var array
      */
     private $_options = array();
-
-    /**
-     * Defalut Field options
-     *
-     * @see $this->_addDefaultOptions()
-     * @var array
-     */
-    private $_defaultOptions = array();
 
     /**
      * Field validation error
@@ -183,7 +175,7 @@ abstract class NamodgField implements NamodgDataHolder {
      */
     protected function _addDefaultOptions($options) {
         if ( is_array($options) ) {
-            $this->_defaultOptions = array_merge($this->_defaultOptions, $options);
+            $this->_options = array_merge($this->_options, $options);
         }
     }
 
@@ -191,13 +183,9 @@ abstract class NamodgField implements NamodgDataHolder {
      * Mereges the passed options array with the default options
      *
      * @param array $options
-     * @return array
      */
     private function _setOptions($options) {
-        $this->_options = empty($options) ? $this->_defaultOptions : array_merge($this->_defaultOptions, $options);
-        
-        // Remove the default options array so that when this object it serialized, it won't be in it!
-        unset ($this->_defaultOptions);
+        $this->_options = array_merge($this->_options, $options);
     }
 
 }

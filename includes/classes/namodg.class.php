@@ -5,8 +5,6 @@
  */
 require_once 'namodg.defaultRenderers.class.php';
 require_once 'namodg.defaultFields.class.php';
-require_once 'core/namodg.language.class.php';
-require_once 'core/namodg.mailer.php';
 
 /**
  * Namodg - Ajax Forms Generator
@@ -27,20 +25,20 @@ class Namodg {
      * Namodg current version
      */
     const version = '1.4';
-
+    
     /**
-     * Configurations container
+     * The key is used to encrypt/decrypt data
+     * 
+     * @var string
+     */
+    private $_key = NULL;
+    
+    /**
+     * Form Attributes Container
      *
      * @var array
      */
-    private $_config = array();
-
-    /**
-     * An array that containes the phrases of the chosen language
-     *
-     * @var array
-     */
-    private $_phrases = array();
+    private $_attrs = array();
 
     /**
      * Namodg fields objects container
@@ -50,31 +48,62 @@ class Namodg {
     private $_fields = array();
 
     /**
-     * Errors container
+     * Validation Errors Container
      *
      * @var array
      */
-    private $_errors = array();
+    private $_validationErrors = array();
+    
+    /**
+     * Fatal errors will be added here when the suppressErrors option is set
+     * 
+     * @var array
+     */
+    private $_fatalErrors = array();
 
     /**
      * Initialize Namodg
-     *
-     * @param array $config
+     * 
+     * @param array $congif form config
+     * @param boolean $suppressErrors allows developers to handle namodg's fatal errors in any way they want
      */
-    public function __construct($config = array()) {
-
-        // Stop if the configurations are not an array
-        if ( ! is_array($config) ) {
-            // Default the language to arabic because there is no config
-            $this->_fillPhrases();
-            $this->addFatalError('config_not_array');
-            return;
+    public function __construct($config = array(), $suppressErrors = false) {
+        
+        if ( ! is_bool($suppressErrors) ) {
+            $suppressErrors = false;
         }
         
-        $this->_config = $this->_replaceDefalutConfig($config);
+        try {
+
+            if ( ! isset ($config['key']) || empty ($config['key']) ) {
+                throw new NamodgException('no_key');
+            } else {
+                $this->_key = $config['key'];
+            }
+            
+            unset ($config['key']);
+            
+            $this->_setAttrs($config);
+            
+        } catch (NamodgException $e) {
+            
+            if ( $suppressErrors ) {
+                $this->_fatalErrors[ $e->getID() ] = $e->getMessage();
+            } else {
+                echo 'Namodg error: ', $e->getMessage();
+                exit(1);
+            }
+            
+        }
         
-        $this->_fillPhrases( $this->_config['language'] );
-        $this->_validateConfig();
+    }
+    
+    public function getAttr($id) {
+        return $this->_attrs[$id];
+    }
+    
+    public function getAttrs() {
+        return $this->_attrs;
     }
 
     /**
@@ -86,15 +115,19 @@ class Namodg {
     public function getField($name) {
         return $this->_fields[$name];
     }
+    
+    public function getFields() {
+        return $this->_fields;
+    }
 
-   /**
+    /**
     * Checks to see if the data was sent and that if it contains valid NamodgField Objects.
     *
     * @return boolean
     */
     public function canBeProcessed() {
 
-        $method = $GLOBALS['_' . $this->_config['method']];
+        $method = $GLOBALS['_' . $this->_attrs['method']];
 
         // Stop if there is no request or if the request doesn't contain namodg data
         if ( ! $method && ! isset($method['namodg_fields']) ) {
@@ -121,18 +154,14 @@ class Namodg {
         unset($method['namodg_fields']);
         
         // Store the data from the request to be used later
-        $this->_addFieldsDataFromRequest($method);
+        foreach ($method as $name => $value) {
+            $field = $this->getField($name);
+            if ( $field ) {
+                $field->setValue($value);
+            }
+        }
         
         return true;
-    }
-
-    /**
-     * Checks to see if the request was Ajax
-     *
-     * @return boolean
-     */
-    public function isAjaxRequest() {
-        return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
     }
 
     /**
@@ -154,7 +183,7 @@ class Namodg {
      * @return boolean
      */
     public function isDataValid() {
-        return ( isset($this->_errors['validation']) && count($this->_errors['validation']) !== 0 ) ? false : true;
+        return ( isset($this->_validationErrors) && count($this->_validationErrors) !== 0 ) ? false : true;
     }
 
     /**
@@ -163,110 +192,7 @@ class Namodg {
      * @return array
      */
     public function getValidationErrors() {
-        return (array)$this->_errors['validation'];
-    }
-
-    /**
-     * Draws the form beginning HTML tag
-     * 
-     * @return string
-     */
-    public function getOpeningHTML() {
-        $form = new NamodgFormRenderer();
-        $form->addAttr('action', $this->_config['url']);
-        $form->addAttr('method', $this->_config['method']);
-
-        if ( $this->_config['id'] ) {
-            $form->setID( $this->_config['id'] );
-        }
-
-        if ( $this->_config['class'] ) {
-            $form->addClass( $this->_config['class'] );
-        }
-
-        return $form->render();
-    }
-
-    /**
-     * Draws all namodg fields, and return them as an array
-     *
-     * @param boolean $withErrors returns the error of each fields with it
-     * @return array
-     */
-    public function getFieldsAsArray($withErrors = false) {
-        $fields = array();
-        $i = 0;
-
-        foreach ( $this->_fields as $field ) {
-
-            $fields[$i]['field_html'] = $field->getHTML();
-            $fields[$i]['field_type'] = $field->getType();
-            $fields[$i]['value'] = $field->getValue();
-
-            if ( $withErrors && isset($this->_errors['validation'][$field->getName()]) ) {
-               $fields[$i]['validation_error'] =  $this->_errors['validation'][$field->getName()]['error'];
-            }
-
-            if ( $field->getOption('title') ) {
-                $fields[$i]['title'] = $field->getOption('title');
-            }
-
-            if ( ! $field->getOption('label')) {
-                $i++;
-                continue;
-            }
-
-            $fields[$i]['label'] = $field->getOption('label');
-            
-            $labelHTML = '<label ' . ( $field->getOption('id') ? 'for="' . $field->getOption('id') . '"' : '' ) . ' >';
-            $labelHTML .= $field->getOption('label');
-            $labelHTML .= '</label>';
-            $fields[$i]['label_html'] = $labelHTML;
-            $i++;
-        }
-
-        return $fields;
-    }
-
-    /**
-     * Helper method. Returns the same array as the one above, except it returns the error
-     * of each field if it has one
-     * 
-     * @return boolean
-     */
-    public function getFieldsWithErrorsAsArray() {
-        return $this->getFieldsAsArray($withErrors = true);
-    }
-
-    /**
-     * Draws the form closing HTML tag
-     *
-     * @return string
-     */
-    public function getClosingHTML() {
-        $closing = '<div><input type="hidden" name="namodg_fields" value="' . $this->_encrypt( serialize($this->_fields) ) . '"></div>' . PHP_EOL;
-        $closing .= '</form>';
-        return $closing;
-    }
-
-    /**
-     * Phrases getter method
-     * 
-     * @param string $group the groups of phrases
-     * @param string $id the id of the reqested phrase
-     * @return string
-     */
-    public function getPhrase($group, $id) {
-        return $this->_phrases[$group][$id];
-    }
-
-    /**
-     * Returns the phrases used in the runtime via Javascript
-     * 
-     * @return array
-     */
-    public function getJsPhrases() {
-        return $this->_phrases['js'];
+        return (array)$this->_validationErrors;
     }
 
     /**
@@ -275,73 +201,25 @@ class Namodg {
      * @return array
      */
     public function getFatalErrors() {
-        
-        // Late checkings - after adding the fields
-        if ( $this->_config['replay_to_field_name'] && !empty($this->_config['replay_to_field_name']) && !array_key_exists($this->_config['replay_to_field_name'], $this->_fields) ) {
-            $this->addFatalError('reply_to_field_name_not_valid');
+        return $this->_fatalErrors;;
+    }
+
+    public function __toString() {
+        $form = new NamodgFormRenderer( $this->getFields() , $this->_key);
+        $form->addAttr('action', $this->_attrs['url']);
+        $form->addAttr('method', $this->_attrs['method']);
+
+        if ( $this->_attrs['id'] ) {
+            $form->setID( $this->_attrs['id'] );
         }
-        
-        if ( ! isset ($this->_errors['fatal']) ) {
-            $this->_errors['fatal'] = array();
+
+        if ( $this->_attrs['class'] ) {
+            $form->addClass( $this->_attrs['class'] );
         }
-        
-        return $this->_errors['fatal'];
+
+        return $form->render();  
     }
-
-    /**
-     * Helper method. Returns the data used in the email message as an array
-     * @return array
-     */
-    public function getMessageData() {
-        return $this->_generateMessageDataAs('array');
-    }
-
-    /**
-     * Sends the message generated via the template engine
-     *
-     * @param string $messageHTML
-     * @return boolean the status of the sending process
-     */
-    public function sendUsingTemplate($messageHTML) {
-        $mailer = new NamodgMailer();
-
-        $mailer->from($this->getPhrase('mailer', 'sender_name'), $this->_config['email']);
-
-        $mailer->to($this->_config['email']);
-
-        if ( ! empty($this->_config['replay_to_field_name']) ) {
-            $mailer->replyTo( $this->getField( $this->_config['replay_to_field_name'] )->getCleanedValue() );
-        }
-        
-        $mailer->subject($this->_config['message_title']);
-
-        $mailer->body($messageHTML);
-        $mailer->altBody($this->_generateMessageDataAs('plain'));
-
-        return $mailer->send();
-    }
-
-    /**
-     * Mailer errors getter
-     * 
-     * @return array
-     */
-    public function getMailerErrors() {
-        return $this->_errors['mailer'];
-    }
-
-    /**
-     * Adds fatal errors to the errors array
-     * 
-     * @param string $id the error id
-     */
-    public function addFatalError($id) {
-        if ( ! isset($this->_errors['fatal']) ) {
-            $this->_errors['fatal'] = array();
-        }
-        array_push($this->_errors['fatal'], $this->_phrases['errors'][$id]);
-    }
-
+    
     /**
      * This makes new NamodgField classes work without adding them to the script's core,
      * It tries to check if the called function is a NamodgField class and if it is, it runs it. Otherwise
@@ -365,126 +243,47 @@ class Namodg {
             $arguments[0] = preg_replace('/\s+/', '_', $arguments[0]);
         }
 
-        // Create a new class with unknows arguments
-        $class = new ReflectionClass($class);
-
+        // Create a new object with unknows arguments
+        $field = new ReflectionClass($class);
+        
         // Pass the arguments to the class and add it to the fields array
-        $this->_addField( $class->newInstanceArgs($arguments) );
+        $this->_addField( $field->newInstanceArgs($arguments) );
+    }
+
+    /**
+     * Makes sure the field class implements NamodgDataHolder interface, or lets PHP throw an error.
+     * This is just a way to stay save.
+     *
+     * @param NamodgDataHolder $field
+     */
+    private function _addField(NamodgDataHolder $field) {
+        $this->_fields[$field->getName()] = $field;
     }
 
     /**
      * Merge the passed config array with the default config
      * 
-     * @param array $config
+     * @param array $attrs
      * @return array the new config array
      */
-    private function _replaceDefalutConfig($config) {
-
+    private function _setAttrs($attrs) {
+        
+        if ( ! is_array($attrs) ) {
+            throw new NamodgException('config_not_array');
+        }
+        
         $defaults = array (
             'id' => NULL,
             'class' => NULL,
             'method' => 'POST',
             'url' => $_SERVER['SCRIPT_NAME'],
-            'language' => 'ar',
-            'email' => NULL
         );
 
-        $config = array_map('trim', $config);
+        $this->_attrs = array_merge( $defaults, array_map('trim', $attrs) );
         
-        return ( empty($config) ) ? $defaults : array_merge($defaults, $config);
-    }
-
-    /**
-     * Validates the configurations array
-     * 
-     */
-    private function _validateConfig() {
-        
-        if ( empty($this->_config['key']) ) {
-            $this->addFatalError('no_key');
+        if ( strtoupper($this->_attrs['method']) !== 'POST' && strtoupper($this->_attrs['method']) !== 'GET' ) {
+            throw new NamodgException('method_not_valid');
         }
-
-        if ( strtoupper($this->_config['method']) !== 'POST' && strtoupper($this->_config['method']) !== 'GET' ) {
-            $this->addFatalError('method_not_valid');
-        }
-
-        if ( empty($this->_config['email']) || ! filter_var($this->_config['email'], FILTER_VALIDATE_EMAIL)) {
-            $this->addFatalError('receipt_email_not_valid');
-        }
-
-        if ( ! function_exists('mail') || ! is_callable('mail') ) {
-            $this->addFatalError('mail_function_disabled');
-        }
-        
-    }
-    
-    /**
-     * Fill the phrases array
-     *
-     * @param string $langId
-     * @param boolean $configError
-     */
-    private function _fillPhrases($langId = '') {
-        
-        $lang = new NamodgLanguage($langId);
-        
-        $lang->parseArrayFromFolder('phrase', dirname(__FILE__) . '/../../languages');
-
-        $this->_phrases = $lang->getPhrases();
-        
-        // Wait untill the phrases are loaded before adding the errors!
-        if ( ! $lang->isCodeValid() ) {
-            $this->addFatalError('language_code_length_not_valid');
-        }
-
-        if ( ! $lang->doesFileExsists() ) {
-            $this->addFatalError('language_file_not_found');
-        }
-    }
-
-    /**
-     * Makes sure the field class is a NamodgField object, or lets PHP throw an error.
-     * This is just to stay save.
-     *
-     * @param NamodgField $fieldObj
-     */
-    private function _addField(NamodgField $fieldObj) {
-        $this->_fields[$fieldObj->getName()] = $fieldObj;
-    }
-
-    /**
-     * Stores the sent data into the field
-     *
-     * @param string $method
-     */
-    private function _addFieldsDataFromRequest($method) {
-        foreach ($method as $name => $value) {
-            if ( $this->getField($name) ) {
-                $this->getField($name)->setValue($value);
-            }
-        }
-    }
-
-    /**
-     * Basic encryption method
-     *
-     * @param string $str
-     * @return string
-     */
-    private function _encrypt($str){
-
-      if (empty($this->_config['key'])) {
-          return $str;
-      }
-      
-      $result = '';      
-      for($i=0, $length = strlen($str); $i<$length; $i++) {
-         $char = substr($str, $i, 1);
-         $keychar = substr($this->_config['key'], ($i % strlen($this->_config['key']))-1, 1);
-         $char = chr(ord($char)+ord($keychar));
-         $result.= $char;
-      }
-      return base64_encode($result);
     }
 
     /**
@@ -493,62 +292,16 @@ class Namodg {
      * @param string $str
      * @return string
      */
-    private function _decrypt($str){
-
-        if (empty($this->_config['key'])) {
-          return $str;
-        }
-
+    private static function _decrypt($str){
         $str = base64_decode($str);
         $result = '';
         for($i=0, $length = strlen($str); $i<$length; $i++) {
             $char = substr($str, $i, 1);
-            $keychar = substr($this->_config['key'], ($i % strlen($this->_config['key']))-1, 1);
+            $keychar = substr($this->_key, ($i % strlen($this->_attrs['key']))-1, 1);
             $char = chr(ord($char)-ord($keychar));
             $result.=$char;
         }
         return $result;
-    }
-
-    /**
-     * Generates the data used in the message and returs in the
-     * type specified by the user
-     *
-     * @param $type array or string
-     * @return mixen
-     */
-    private function _generateMessageDataAs($type) {
-        $return = ($type == 'array') ? array() : '';
-
-        foreach ( $this->_fields as $field ) {
-
-            // Don't process the fields that won't be sent
-            if ( $field->getOption('send') == false) {
-                continue;
-            }
-
-            $id = ( $field->getOption('label') ) ? $field->getOption('label') : $field->getName();
-            $id = trim(str_replace(':', '', $id));
-            $value = trim($field->getCleanedValue());
-            
-            if ( $type == 'array' ) {
-                if ( $field->getType() == 'textarea' ) {
-                    $return['multiple_lines'][] = array(
-                        'id' => $id . ' : ',
-                        'value' => nl2br($value)
-                    );
-                } else {
-                    $return['one_line'][] = array(
-                        'id' => $id . ' : ',
-                        'value' => $value
-                    );
-                }
-            } elseif ( $type == 'plain') {
-                $return .= $id . ' : ' . $value . PHP_EOL;
-            }
-        }
-
-        return $return;
     }
 
     /**
@@ -559,13 +312,17 @@ class Namodg {
      * @param string $error
      */
     private function _addValidationError($fieldName, $label, $error) {
-        if ( ! isset($this->_errors['validation']) ) {
-            $this->_errors['validation'] = array();
+        if ( ! isset($this->_validationErrors) ) {
+            $this->_validationErrors = array();
         }
         
-        $this->_errors['validation'][$fieldName] = array(
+        $this->_validationErrors[$fieldName] = array(
             'fieldLabel' => $label,
             'error' => ( isset($this->_phrases['validation'][$fieldName][$error]) && ! empty($this->_phrases['validation'][$fieldName][$error]) ) ? $this->_phrases['validation'][$fieldName][$error] : $this->_phrases['validation'][$error]
         );
     }
+}
+
+class NamodgException extends Exception {
+    
 }
