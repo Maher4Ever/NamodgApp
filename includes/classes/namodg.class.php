@@ -276,7 +276,7 @@ class Namodg {
      */
     public function getFatalErrors() {
         
-// Late checkings - after adding the fields
+        // Late checkings - after adding the fields
         if ( $this->_config['replay_to_field_name'] && !empty($this->_config['replay_to_field_name']) && !array_key_exists($this->_config['replay_to_field_name'], $this->_fields) ) {
             $this->addFatalError('reply_to_field_name_not_valid');
         }
