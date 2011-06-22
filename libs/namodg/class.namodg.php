@@ -187,7 +187,8 @@ class Namodg {
 
     /**
      * Validates the fields and sets an error if a field is not valid
-     *
+     * 
+     * @return $this Allows chaining
      */
     public function validate() {
         foreach ( $this->_fields as $field) {
@@ -195,6 +196,7 @@ class Namodg {
                 $this->_addValidationError( $field->getName(), $field->getOption('label'), $field->getValidationError());
             }
         }
+        return $this;
     }
 
     /**

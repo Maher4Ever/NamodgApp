@@ -107,9 +107,11 @@ abstract class NamodgField implements NamodgDataHolder {
      * Value setter
      *
      * @param string $value
+     * @return $this Allows chaining
      */
     public function setValue($value) {
         $this->_value = $value;
+        return $this;
     }
 
     /**
@@ -136,9 +138,11 @@ abstract class NamodgField implements NamodgDataHolder {
      *
      * @param string $id option id
      * @param string $value
+     * @return $this Allows chaining
      */
     public function setOption($id, $value) {
         $this->_options[$id] = $value;
+        return $this;
     }
 
     /**
@@ -155,9 +159,11 @@ abstract class NamodgField implements NamodgDataHolder {
      * Field error setter, changes the current field error to the last one
      * 
      * @param $errorID
+     * @return $this Allows chaining
      */
     protected function _setValidationError($errorID) {
         $this->_validatonError = $errorID;
+        return $this;
     }
 
     /**
@@ -173,20 +179,24 @@ abstract class NamodgField implements NamodgDataHolder {
      * Allows to add extra default options
      * 
      * @param array $options
+     * @return $this Allows chaining
      */
     protected function _addDefaultOptions($options) {
         if ( is_array($options) ) {
             $this->_options = array_merge($this->_options, $options);
         }
+        return $this;
     }
 
     /**
      * Mereges the passed options array with the default options
      *
      * @param array $options
+     * @return $this Allows chaining
      */
     private function _setOptions($options) {
         $this->_options = array_merge($this->_options, $options);
+        return $this;
     }
 
 }

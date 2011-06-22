@@ -117,6 +117,7 @@ class NamodgFieldRenderer extends NamodgRenderer {
         } else {
             $this->addAttr('data-validation', $rule);
         }
+        return $this;
     }
 
     public function render() {

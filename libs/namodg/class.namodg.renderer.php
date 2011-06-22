@@ -72,16 +72,19 @@ abstract class NamodgRenderer implements Renderable {
      * 
      * @param string $attrID
      * @param stinrg $value
+     * @return $this Allows chaining
      */
     public function addAttr($attrID, $value) {
 
         $attrID = strtolower($attrID);
 
         if ($attrID == 'id') {
-            return $this->setID($value);
+            $this->setID($value);
+        } else {
+            $this->_attrs[$attrID] = $value;
         }
-
-        $this->_attrs[$attrID] = $value;
+        
+        return $this;
     }
 
     /**
@@ -107,22 +110,25 @@ abstract class NamodgRenderer implements Renderable {
      * Tag ID setter
      * 
      * @param string $idValue
+     * @return $this Allows chaining
      */
     public function setID($idValue) {
         $this->_attrs['id'] = $idValue;
+        return $this;
     }
 
     /**
      * Adds CSS classes to the tag
      *
      * @param string $class
+     * @return $this Allows chaining
      */
     public function addClass($class) {
         if ( isset($this->_attrs['class']) ) {
-          $this->_attrs['class'] .= ' ' . $class;
+            $this->_attrs['class'] .= ' ' . $class;
         } else {
             $this->addAttr('class', $class);
         }
-
+        return $this;
     }
 }
