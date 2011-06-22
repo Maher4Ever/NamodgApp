@@ -17,7 +17,7 @@
 /*
  * Include dependencies
  */
-require_once 'core/namodg.renderer.class.php';
+require_once 'class.namodg.renderer.php';
 
 /**
  * This generates the openning of the form ONLY!

@@ -3,17 +3,17 @@
 /*
  * Include dependencies
  */
-require_once 'namodg.defaultRenderers.class.php';
-require_once 'namodg.defaultFields.class.php';
+require_once 'class.namodg.defaultRenderers.php';
+require_once 'class.namodg.defaultFields.php';
 
 /**
  * Namodg - Ajax Forms Generator
  *
  * @desc Namodg allows developers to make ajax-driven forms easily. It uses OOP aproach,
  *       which means developers has to write less code!
- * @author Maher Salam <admin@namodg.com>
+ * @author Maher Sallam <admin@namodg.com>
  * @link http://namodg.com
- * @copyright Copyright (c) 2010-2011, Maher Salam
+ * @copyright Copyright (c) 2010-2011, Maher Sallam
  *
  * Dual licensed under the MIT and GPL licenses:
  *   @license http://www.opensource.org/licenses/mit-license.php
@@ -102,10 +102,20 @@ class Namodg {
         
     }
     
+    /**
+     * Attribute getter method
+     * 
+     * @param string $id
+     * @return string
+     */
     public function getAttr($id) {
         return $this->_attrs[$id];
     }
     
+    /**
+     * All attributes getter method
+     * @return array
+     */
     public function getAttrs() {
         return $this->_attrs;
     }
@@ -120,6 +130,11 @@ class Namodg {
         return $this->_fields[$name];
     }
     
+    /**
+     * All fields getter method
+     * 
+     * @return array
+     */
     public function getFields() {
         return $this->_fields;
     }
@@ -209,7 +224,12 @@ class Namodg {
     public function getFatalErrors() {
         return $this->_fatalErrors;;
     }
-
+    
+    /**
+     * Prints the form HTML when naomdg object is treated as a var
+     * 
+     * @return string the form HTML
+     */
     public function __toString() {
         $form = new NamodgFormRenderer( $this->getFields() , self::$_key);
         $form->addAttr('action', $this->_attrs['url']);
@@ -267,10 +287,9 @@ class Namodg {
     }
 
     /**
-     * Merge the passed config array with the default config
+     * Settes the attributes of this form and validates them as well
      * 
      * @param array $attrs
-     * @return array the new config array
      */
     private function _setAttrs($attrs) {
         
@@ -321,6 +340,11 @@ class Namodg {
     }
 }
 
+/**
+ * Namodg Exception
+ * 
+ * @desc Namodg Exception is used to print the errors when the suppressErrors option is false
+ */
 class NamodgException extends Exception {
     
     public function getError() {

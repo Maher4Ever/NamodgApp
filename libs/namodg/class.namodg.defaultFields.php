@@ -17,8 +17,8 @@
 /*
  * Include dependencies
  */
-require_once 'core/namodg.field.class.php';
-require_once 'namodg.defaultRenderers.class.php';
+require_once 'class.namodg.field.php';
+require_once 'class.namodg.defaultRenderers.php';
 
 /**
  * Namodg Text Field

@@ -1,6 +1,6 @@
 <?php 
 
-require_once 'includes/classes/namodg.class.php';
+require_once 'libs/namodg/class.namodg.php';
 
 $form = new Namodg(array(
     'key' => 'key',
