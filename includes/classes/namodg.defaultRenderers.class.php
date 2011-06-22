@@ -26,12 +26,12 @@ class NamodgFormRenderer extends NamodgRenderer {
     
     private $_fields = NULL;
     
-    private $_key = NULL;
+    private static $_key = NULL;
     
     public function __construct($fields, $key) {
         parent::__construct('form');
         $this->_fields = $fields;
-        $this->_key = $key;
+        self::$_key = $key;
     }
 
     public function render() {
@@ -43,10 +43,13 @@ class NamodgFormRenderer extends NamodgRenderer {
         }
         $html .= '>' . PHP_EOL;
         
+        // W3C doesn't allow inputs inside forms directly
+        $html .= "\t<div>" . PHP_EOL;
+        
         // Build fields
         foreach ( $this->_fields as $field ) {     
             if ( $field->getOption('label') ) {
-                $labelHTML = "\t";
+                $labelHTML = "\t\t";
                 $labelHTML .= '<label ' . ( $field->getOption('id') ? 'for="' . $field->getOption('id') . '"' : '' ) . ' >';
                 $labelHTML .= $field->getOption('label');
                 $labelHTML .= '</label>' . PHP_EOL;
@@ -54,11 +57,14 @@ class NamodgFormRenderer extends NamodgRenderer {
                 $html .= $labelHTML;
             }
             
-            $html .= $field->getHTML();
+            $html .= "\t\t" . $field->getHTML() . PHP_EOL . PHP_EOL;
         }
         
         // Add namodg hidden field
-        $html .= "\t" . '<input type="hidden" name="namodg_fields" value="' . self::_encrypt( serialize($this->_fields) ) . '">' . PHP_EOL;
+        $html .= "\t\t<input type='hidden' name='namodg_fields' value='" . self::_encrypt( serialize($this->_fields) ) . "'>" . PHP_EOL;
+        
+        // Close the div
+        $html .= "\t</div>" . PHP_EOL;
         
         // Close form html
         $html .= $this->_getClosingHTML();
@@ -76,7 +82,7 @@ class NamodgFormRenderer extends NamodgRenderer {
       $result = '';      
       for($i=0, $length = strlen($str); $i<$length; $i++) {
          $char = substr($str, $i, 1);
-         $keychar = substr($this->_key, ($i % strlen($this->_attrs['key']))-1, 1);
+         $keychar = substr(self::$_key, ($i % strlen(self::$_key))-1, 1);
          $char = chr(ord($char)+ord($keychar));
          $result.= $char;
       }
@@ -89,9 +95,7 @@ class NamodgFormRenderer extends NamodgRenderer {
      * @return string
      */
     private function _getClosingHTML() {
-        $closing = "\t<input type='hidden' name='namodg_fields' value='" . self::_encrypt( serialize($this->_fields) ) . "'>" . PHP_EOL;
-        $closing .= '</form>' . PHP_EOL;
-        return $closing;
+        return '</form>' . PHP_EOL;
     }
 }
 
@@ -198,7 +202,7 @@ class NamodgSelectRenderer extends NamodgFieldRenderer {
             $selectField .= $attr . '="' . $value . '" ';
         }
 
-        $selectField .= $this->_getClosingHTML();
+        $selectField .= $this->_getClosingHTML() . PHP_EOL;
 
         // Adding Options
 

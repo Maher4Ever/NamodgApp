@@ -81,7 +81,8 @@ abstract class NamodgField implements NamodgDataHolder {
      * @param array $options
      */
     public function __construct($name, $options = array()) {
-        $this->_name = (string)$name;
+        $name = trim($name);
+        $this->_name = empty($name) ? uniqid( $this->getType() . '_' ) : $name;
         $this->_addDefaultOptions(array(
             'id' => NULL,
             'class' => NULL,

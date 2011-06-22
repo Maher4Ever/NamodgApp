@@ -29,9 +29,9 @@ class Namodg {
     /**
      * The key is used to encrypt/decrypt data
      * 
-     * @var string
+     * @static string
      */
-    private $_key = NULL;
+    private static $_key = NULL;
     
     /**
      * Form Attributes Container
@@ -74,11 +74,15 @@ class Namodg {
         }
         
         try {
-
+            
+            if ( ! is_array($config) ) {
+                throw new NamodgException('config_not_array');
+            }
+        
             if ( ! isset ($config['key']) || empty ($config['key']) ) {
                 throw new NamodgException('no_key');
             } else {
-                $this->_key = $config['key'];
+                self::$_key = $config['key'];
             }
             
             unset ($config['key']);
@@ -88,9 +92,9 @@ class Namodg {
         } catch (NamodgException $e) {
             
             if ( $suppressErrors ) {
-                $this->_fatalErrors[ $e->getID() ] = $e->getMessage();
+                $this->_fatalErrors[ $e->getMessage() ] = $e->getError();
             } else {
-                echo 'Namodg error: ', $e->getMessage();
+                echo 'Namodg error: ', $e->getError();
                 exit(1);
             }
             
@@ -136,14 +140,16 @@ class Namodg {
 
         // Only add fields from the request if there are none to save process time when the display and process page are the same
         if ( empty($this->_fields) ) {
-            $fields = unserialize($this->_decrypt($method['namodg_fields']));
+            
+            // We don't want to show errors when something weird happens, Because it will fail and false will be returned!
+            $fields = @unserialize($this->_decrypt($method['namodg_fields']));
 
             if ( ! is_array($fields) ) {
                 return false;
             }
 
             foreach ($fields as $field) {
-                if ( ! ($field instanceof NamodgField) ) {
+                if ( ! ($field instanceof NamodgDataHolder) ) {
                     return false;
                 }
             }
@@ -205,7 +211,7 @@ class Namodg {
     }
 
     public function __toString() {
-        $form = new NamodgFormRenderer( $this->getFields() , $this->_key);
+        $form = new NamodgFormRenderer( $this->getFields() , self::$_key);
         $form->addAttr('action', $this->_attrs['url']);
         $form->addAttr('method', $this->_attrs['method']);
 
@@ -268,10 +274,6 @@ class Namodg {
      */
     private function _setAttrs($attrs) {
         
-        if ( ! is_array($attrs) ) {
-            throw new NamodgException('config_not_array');
-        }
-        
         $defaults = array (
             'id' => NULL,
             'class' => NULL,
@@ -297,7 +299,7 @@ class Namodg {
         $result = '';
         for($i=0, $length = strlen($str); $i<$length; $i++) {
             $char = substr($str, $i, 1);
-            $keychar = substr($this->_key, ($i % strlen($this->_attrs['key']))-1, 1);
+            $keychar = substr(self::$_key, ($i % strlen(self::$_key))-1, 1);
             $char = chr(ord($char)-ord($keychar));
             $result.=$char;
         }
@@ -312,17 +314,23 @@ class Namodg {
      * @param string $error
      */
     private function _addValidationError($fieldName, $label, $error) {
-        if ( ! isset($this->_validationErrors) ) {
-            $this->_validationErrors = array();
-        }
-        
-        $this->_validationErrors[$fieldName] = array(
+        $this->_validationErrors[ $fieldName ] = array(
             'fieldLabel' => $label,
-            'error' => ( isset($this->_phrases['validation'][$fieldName][$error]) && ! empty($this->_phrases['validation'][$fieldName][$error]) ) ? $this->_phrases['validation'][$fieldName][$error] : $this->_phrases['validation'][$error]
+            'error' => $error
         );
     }
 }
 
 class NamodgException extends Exception {
     
+    public function getError() {
+        $errors = array(
+            'no_key' => 'No key is supplied in the configuration array.',
+            'config_not_array' => 'Configurations must be passed as an array.',
+            'method_not_valid' => 'The method configuration must be one of two values: POST or GET.'
+        );
+        
+        return in_array($this->getMessage(), array_flip($errors)) ? $errors [ $this->getMessage() ] : $this->getMessage();
+    }
+        
 }
