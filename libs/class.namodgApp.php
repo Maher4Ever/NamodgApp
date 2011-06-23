@@ -11,30 +11,66 @@ class NamodgApp {
     
     private $_language = NULL;
     
+    private $_errors = array();
+    
     public function __construct( $config = array() ) {
         
         try {
             
-            if ( ! is_array($config) || empty($config) ) {
-                // What will happen ?
+            if ( ! is_array($config) ) {
+                throw new NamodgAppException('config_not_array');
             }
-            
-            $this->_language = isset ($config['app']['language']) && $config['app']['language'] ? new NamodgLanguage($config['app']['language']) : new NamodgLanguage('ar');
             
             if ( ! isset ($config['app'], $config['namodg']) || ! is_array($config['app']) ) {
                 throw new NamodgAppException('config_array_not_valid');
             }
             
-        } catch (NamodgAppException $e) {
-            echo $e->getMessage();
+            $this->_language = isset ($config['app']['language']) && $config['app']['language'] ? $config['app']['language'] : 'ar';
+            $this->_loadLanguage();
             
-            //exit( $this->language()->getPhrase('errors', $e->getMessage()) );
+            $this->_form = new Namodg($config['namodg'], true);
+            
+            if ( $this->form()->getFatalError() ) {
+                $this->_addError( $this->form()->getFatalError() );
+            }
+            
+            if ( ! empty($this->_errors) ) {
+                print_r($this->_errors);
+            }
+            
+        } catch ( NamodgAppException $e ) {
+            // Default to something and show the errors!
+            $this->_addError($e->getMessage());
+            if ( ! empty($this->_errors) ) {
+                print_r($this->_errors);
+            }
         }
-        
     }
     
     public function language() {
         return $this->_language;
+    }
+    
+    public function form() {
+        return $this->_form;
+    }
+    
+    private function _loadLanguage() {
+        $this->_language = new NamodgLanguage($this->_language);
+        
+        if ( $this->language()->getErrors() ) {
+            $this->_addError( $this->language()->getErrors() );
+        }
+    }
+    
+    private function _addError($error) {
+        if ( is_array($error) ) {
+            foreach($error as $oneError) {
+                $this->_addError($oneError);
+            }
+        } else {
+            $this->_errors[] = $error;
+        }        
     }
 }
 

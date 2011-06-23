@@ -55,11 +55,11 @@ class Namodg {
     private $_validationErrors = array();
     
     /**
-     * Fatal errors will be added here when the suppressErrors option is set
+     * Fatal error will be set here when the suppressErrors option is true
      * 
-     * @var array
+     * @var string
      */
-    private $_fatalErrors = array();
+    private $_fatalError = NULL;
 
     /**
      * Initialize Namodg
@@ -92,7 +92,7 @@ class Namodg {
         } catch (NamodgException $e) {
             
             if ( $suppressErrors ) {
-                $this->_fatalErrors[ $e->getMessage() ] = $e->getError();
+                $this->_fatalError = $e->getMessage();
             } else {
                 echo 'Namodg error: ', $e->getError();
                 exit(1);
@@ -219,11 +219,11 @@ class Namodg {
     }
 
     /**
-     * Fatal errors getter method
+     * Fatal error getter method
      * 
      * @return array
      */
-    public function getFatalErrors() {
+    public function getFatalError() {
         return $this->_fatalErrors;;
     }
     

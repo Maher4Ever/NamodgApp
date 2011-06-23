@@ -36,7 +36,8 @@ class NamodgLanguage {
      */
     private $_phrases = array();
 
-
+    private $_errors = array();
+    
     /**
      * Initialize the language
      *
@@ -46,12 +47,18 @@ class NamodgLanguage {
         
         $lang = trim($lang);
         
-        if ( $this->_isLangCodeValid($lang) ) {
+        try {
+            
+            if ( ! $this->_isLangCodeValid($lang) ) {
+               throw new NamodgAppException('language_code_length_not_valid'); 
+            }
+            
             $this->_language = (string)$lang;
-        } else {
-            throw new NamodgAppException('language_code_length_not_valid');
+            
+        } catch( NamodgAppException $e ) {
+            $this->_addError( $e->getMessage() );
         }
-        
+               
         $this->_loadPhrases();
     }
     
@@ -75,21 +82,29 @@ class NamodgLanguage {
         return (array)$this->_phrases;
     }
     
+    public function getErrors() {
+        return empty($this->_errors) ? FALSE : $this->_errors;
+    }
+    
     private function _loadPhrases() {
         
         $file = NAMODG_APP_DIR . 'languages/' . $this->_language . '.php';
+        
+        try {
+            if ( ! file_exists($file) ) {
 
-        if ( ! file_exists($file) ) {
+               if ( $this->_language == 'ar' ) {
+                   exit('NamodgApp Error: Default language file "ar.php" doesn\'t exist. Languages directory: "' . NAMODG_APP_DIR . 'languages"');
+               } else {
+                   throw new NamodgAppException('language_file_not_found');
+               }
 
-           if ( $this->_language == 'ar' ) {
-               exit('NamodgApp Error: Default language file "ar.php" doesn\'t exist. Languages directory: "' . NAMODG_APP_DIR . 'languages"');
-           } else {
-               throw new NamodgAppException('language_file_not_found');
-               $file = NAMODG_APP_DIR . 'languages/ar.php';
-           }
-
+            }
+        } catch( NamodgAppException $e ) {
+            $this->_addError( $e->getMessage() );
+            $file = NAMODG_APP_DIR . 'languages/ar.php';
         }
-
+        
         include $file;
 
         if ( ! isset ($phrase) || ! is_array($phrase) ) {
@@ -125,5 +140,9 @@ class NamodgLanguage {
         );
 
         return (strlen($lang) == 2 && in_array($lang, $langCodes));
+    }
+    
+    private function _addError($error) {
+        $this->_errors[] = $error;
     }
 }
