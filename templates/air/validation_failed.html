@@ -1,0 +1,53 @@
+{include="includes/header"}
+
+<div id="header">
+    <h1><img src="images/header/message-icon.png" alt="message">تواصل معنا</h1>
+    <div id="header-right"></div>
+    <div id="header-left"></div>
+</div>
+
+<div id="content">
+    {$form_open}
+        <div>
+        {loop="fields"}
+
+            {if="$value.field_type === 'submit'"}
+
+                {$value.field_html}
+
+            {elseif="$value.validation_error"}
+
+                <p class="tip">{$value.validation_error}</p>
+
+                {$value.label_html}
+
+                <div class="shade error">
+
+                    {if="$value.field_type === 'select'"}
+                        <p class="alt">{$selected}</p>
+                    {/if}
+
+                    {$value.field_html}
+                </div>
+
+            {else}
+
+                {$value.label_html}
+
+                <div class="shade">
+
+                    {if="$value.field_type === 'select'"}
+                        <p class="alt">{$selected}</p>
+                    {/if}
+
+                    {$value.field_html}
+                </div>
+
+            {/if}
+
+        {/loop}
+        </div>
+    {$form_close}
+</div><!-- #content -->
+
+{include="includes/footer"}

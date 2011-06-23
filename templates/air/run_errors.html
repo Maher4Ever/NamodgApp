@@ -1,0 +1,13 @@
+{include="includes/header"}
+
+<div id="errors">
+    <h1>{$error_title}</h1>
+    <ul>
+    {loop="errors"}
+        <li>{$value}</li>
+    {/loop}
+    </ul>
+    <a href="{$button.url}" class="button">{$button.text}</a>
+</div>
+
+{include="includes/footer"}

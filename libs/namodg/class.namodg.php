@@ -94,8 +94,7 @@ class Namodg {
             if ( $suppressErrors ) {
                 $this->_fatalError = $e->getMessage();
             } else {
-                echo 'Namodg error: ', $e->getError();
-                exit(1);
+                exit('Namodg error: ' . $e->getError());
             }
             
         }
@@ -224,7 +223,7 @@ class Namodg {
      * @return array
      */
     public function getFatalError() {
-        return $this->_fatalErrors;;
+        return $this->_fatalError;
     }
     
     /**
