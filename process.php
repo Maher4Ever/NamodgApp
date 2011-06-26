@@ -2,9 +2,7 @@
 
 require_once 'libs/namodg/class.namodg.php';
 
-$form = new Namodg(array(
-    'key' => 'key'
-));
+$form = new Namodg('aaa6dd417d1f99aa760caccdd2e2ef49');
 
 if ( $form->canBeProcessed() ) {
     

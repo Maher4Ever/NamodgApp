@@ -2,8 +2,10 @@
 
 require_once 'libs/namodg/class.namodg.php';
 
+// $form = new Namodg('aaa6dd417d1f99aa760caccdd2e2ef49');
+
 $form = new Namodg(array(
-    'key' => 'key',
+    'key' => 'aaa6dd417d1f99aa760caccdd2e2ef49',
     'url' => 'process.php'
 ));
 

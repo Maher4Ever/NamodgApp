@@ -64,7 +64,7 @@ class Namodg {
     /**
      * Initialize Namodg
      * 
-     * @param array $congif form config
+     * @param array $config form config
      * @param boolean $suppressErrors allows developers to handle namodg's fatal errors in any way they want
      */
     public function __construct($config = array(), $suppressErrors = false) {
@@ -75,27 +75,41 @@ class Namodg {
         
         try {
             
-            if ( ! is_array($config) ) {
-                throw new NamodgException('config_not_array');
-            }
-        
-            if ( ! isset ($config['key']) || empty ($config['key']) ) {
-                throw new NamodgException('no_key');
+            if ( is_array($config) ) {
+                
+                if ( ! isset ($config['key']) || empty ($config['key']) ) {
+                    throw new NamodgException('no_key');
+                } else {
+                    self::$_key = $config['key'];
+                }  
+                
+                unset ($config['key']);
+
+                $this->_setAttrs($config);
+            
+            } elseif ( is_string($config) ) {
+   
+                self::$_key = $config;
+                $this->_setAttrs();
+                
             } else {
-                self::$_key = $config['key'];
+                
+                throw new NamodgException('no_key');
+   
             }
             
-            unset ($config['key']);
+            self::$_key = trim(self::$_key);
             
-            $this->_setAttrs($config);
-            
+            if ( empty(self::$_key) || strlen(self::$_key) < 10 ) {
+                throw new NamodgException('weak_key');
+            }
+                
         } catch (NamodgException $e) {
             
             if ( $suppressErrors ) {
                 $this->_fatalError = $e->getMessage();
             } else {
-                echo 'Namodg error: ', $e->getError();
-                exit(1);
+                exit('Namodg error: ' . $e->getError());
             }
             
         }
@@ -193,7 +207,7 @@ class Namodg {
     public function validate() {
         foreach ( $this->_fields as $field) {
             if ( ! $field->isValid() ) {
-                $this->_addValidationError( $field->getName(), $field->getOption('label'), $field->getValidationError());
+                $this->_addValidationError( $field->getName(), $field->getValidationError());
             }
         }
         return $this;
@@ -215,7 +229,7 @@ class Namodg {
      * @return array
      */
     public function getValidationErrors() {
-        return (array)$this->_validationErrors;
+        return empty($this->_validationErrors) ? FALSE : $this->_validationErrors;
     }
 
     /**
@@ -224,7 +238,7 @@ class Namodg {
      * @return array
      */
     public function getFatalError() {
-        return $this->_fatalErrors;;
+        return $this->_fatalError;
     }
     
     /**
@@ -293,7 +307,7 @@ class Namodg {
      * 
      * @param array $attrs
      */
-    private function _setAttrs($attrs) {
+    private function _setAttrs($attrs = NULL) {
         
         $defaults = array (
             'id' => NULL,
@@ -302,7 +316,7 @@ class Namodg {
             'url' => $_SERVER['SCRIPT_NAME'],
         );
 
-        $this->_attrs = array_merge( $defaults, array_map('trim', $attrs) );
+        $this->_attrs = $attrs ? array_merge( $defaults, array_map('trim', $attrs) ) : $defaults;
         
         if ( strtoupper($this->_attrs['method']) !== 'POST' && strtoupper($this->_attrs['method']) !== 'GET' ) {
             throw new NamodgException('method_not_valid');
@@ -331,14 +345,10 @@ class Namodg {
      * Addes validation errors to the errors array
      * 
      * @param string $fieldName
-     * @param string $label
      * @param string $error
      */
-    private function _addValidationError($fieldName, $label, $error) {
-        $this->_validationErrors[ $fieldName ] = array(
-            'fieldLabel' => $label,
-            'error' => $error
-        );
+    private function _addValidationError($fieldName, $error) {
+        $this->_validationErrors[ $fieldName ] = $error;
     }
 }
 
@@ -351,8 +361,8 @@ class NamodgException extends Exception {
     
     public function getError() {
         $errors = array(
-            'no_key' => 'No key is supplied in the configuration array.',
-            'config_not_array' => 'Configurations must be passed as an array.',
+            'no_key' => 'No key is passed to namodg.',
+            'weak_key' => 'The key must be at least 10 characters long.',
             'method_not_valid' => 'The method configuration must be one of two values: POST or GET.'
         );
         
