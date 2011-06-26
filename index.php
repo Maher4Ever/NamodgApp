@@ -6,7 +6,7 @@ require_once 'libs/class.namodgApp.php';
 
 $config = array(
     'app' => array(
-        'language' => 'ar2'
+        'language' => 'ar'
     ),
     'namodg' => array(
         'key' => 'daslnd#$addas3842'
@@ -83,4 +83,4 @@ $app->form()->addTextarea('الرسالة', array(
  */
 $app->form()->addSubmit('ارسال', 'ارسل الرسالة');
 
-echo $app->form();
+$app->showHome();

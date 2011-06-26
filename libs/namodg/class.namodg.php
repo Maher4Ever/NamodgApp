@@ -192,7 +192,7 @@ class Namodg {
     public function validate() {
         foreach ( $this->_fields as $field) {
             if ( ! $field->isValid() ) {
-                $this->_addValidationError( $field->getName(), $field->getOption('label'), $field->getValidationError());
+                $this->_addValidationError( $field->getName(), $field->getValidationError());
             }
         }
         return $this;
@@ -214,7 +214,7 @@ class Namodg {
      * @return array
      */
     public function getValidationErrors() {
-        return (array)$this->_validationErrors;
+        return empty($this->_validationErrors) ? FALSE : $this->_validationErrors;
     }
 
     /**
@@ -330,14 +330,10 @@ class Namodg {
      * Addes validation errors to the errors array
      * 
      * @param string $fieldName
-     * @param string $label
      * @param string $error
      */
-    private function _addValidationError($fieldName, $label, $error) {
-        $this->_validationErrors[ $fieldName ] = array(
-            'fieldLabel' => $label,
-            'error' => $error
-        );
+    private function _addValidationError($fieldName, $error) {
+        $this->_validationErrors[ $fieldName ] = $error;
     }
 }
 

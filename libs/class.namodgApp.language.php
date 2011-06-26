@@ -19,7 +19,7 @@
  *
  * @desc Allow the translation of Namodg later on
  */
-class NamodgLanguage {
+class NamodgAppLanguage {
 
     /**
      * Language ID

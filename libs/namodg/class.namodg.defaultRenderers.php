@@ -33,10 +33,8 @@ class NamodgFormRenderer extends NamodgRenderer {
         $this->_fields = $fields;
         self::$_key = $key;
     }
-
-    public function render() {
-       
-        // Form beginning tag
+    
+    public function getOpeningHTML() {
         $html = '<form ';
         foreach ( $this->getAllAttrs() as $attr => $value) {
             $html .= $attr . '="' . $value . '" ';
@@ -46,8 +44,35 @@ class NamodgFormRenderer extends NamodgRenderer {
         // W3C doesn't allow inputs inside forms directly
         $html .= "\t<div>" . PHP_EOL;
         
+        return $html;
+    }
+
+    /**
+     * Draws the form closing HTML tag
+     *
+     * @return string
+     */
+    public function getClosingHTML() {
+        
+        // Add namodg hidden field
+        $html = "\t\t<input type='hidden' name='namodg_fields' value='" . self::_encrypt( serialize($this->_getFields()) ) . "'>" . PHP_EOL;
+        
+        // Close the div
+        $html .= "\t</div>" . PHP_EOL;
+        
+        // Close the form
+        $html .= '</form>' . PHP_EOL;
+        
+        return $html;
+    }
+    
+    public function render() {
+       
+        // Form beginning tag
+        $html = $this->getOpeningHTML();
+                
         // Build fields
-        foreach ( $this->_fields as $field ) {     
+        foreach ( $this->_getFields() as $field ) {     
             if ( $field->getOption('label') ) {
                 $labelHTML = "\t\t";
                 $labelHTML .= '<label ' . ( $field->getOption('id') ? 'for="' . $field->getOption('id') . '"' : '' ) . ' >';
@@ -59,17 +84,15 @@ class NamodgFormRenderer extends NamodgRenderer {
             
             $html .= "\t\t" . $field->getHTML() . PHP_EOL . PHP_EOL;
         }
-        
-        // Add namodg hidden field
-        $html .= "\t\t<input type='hidden' name='namodg_fields' value='" . self::_encrypt( serialize($this->_fields) ) . "'>" . PHP_EOL;
-        
-        // Close the div
-        $html .= "\t</div>" . PHP_EOL;
-        
+                
         // Close form html
-        $html .= $this->_getClosingHTML();
+        $html .= $this->getClosingHTML();
         
         return $html;
+    }
+    
+    protected function _getFields() {
+        return $this->_fields;
     }
 
     /**
@@ -78,7 +101,7 @@ class NamodgFormRenderer extends NamodgRenderer {
      * @param string $str
      * @return string
      */
-    private static function _encrypt($str){
+    protected static function _encrypt($str){
       $result = '';      
       for($i=0, $length = strlen($str); $i<$length; $i++) {
          $char = substr($str, $i, 1);
@@ -87,15 +110,6 @@ class NamodgFormRenderer extends NamodgRenderer {
          $result.= $char;
       }
       return base64_encode($result);
-    }
-    
-    /**
-     * Draws the form closing HTML tag
-     *
-     * @return string
-     */
-    private function _getClosingHTML() {
-        return '</form>' . PHP_EOL;
     }
 }
 
@@ -154,7 +168,7 @@ class NamodgFieldRenderer extends NamodgRenderer {
         return $this->_field;
     }
 
-    private function _getClosingHTML() {
+    protected function _getClosingHTML() {
         switch ( $this->getTag() ) {
             case 'input':
                 return 'value="' . $this->_getField()->getValue() . '">';
@@ -225,7 +239,7 @@ class NamodgSelectRenderer extends NamodgFieldRenderer {
         return $selectField . $options . '</select>';
     }
 
-    private function _getClosingHTML() {
+    protected function _getClosingHTML() {
         return '>';
     }
 }

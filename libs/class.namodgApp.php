@@ -1,10 +1,12 @@
 <?php
 
-require_once 'class.namodgApp.language.php';
 require_once 'namodg/class.namodg.php';
+require_once 'class.namodgApp.language.php';
 require_once 'class.rain.tpl.php';
 
 class NamodgApp {
+    
+    private static $_key = NULL;
     
     private $_form = NULL;
     
@@ -34,6 +36,8 @@ class NamodgApp {
             $this->_form = new Namodg($config['namodg'], true);
             if ( $this->form()->getFatalError() ) {
                 $this->_addError( $this->form()->getFatalError() );
+            } else {
+                self::$_key = $config['namodg']['key'];
             }
                         
         } catch ( NamodgAppException $e ) { // Fatal config error           
@@ -45,30 +49,87 @@ class NamodgApp {
              ->_loadTemplate();
         
         if ( $this->_getErrors() ) {
-            $this->tpl()->assign('error_title', $this->language()->getPhrase('misc', 'fatal_errors_title'));
-            $this->tpl()->assign('errors', $this->_getErrors());
-            $this->tpl()->assign('button', array( 'url' => $_SERVER['SCRIPT_NAME'], 'text' => $this->language()->getPhrase('misc', 'reload_page')) );
-            exit( $this->tpl()->draw('run_errors', true) );
+            $this->_tpl()->assign('error_title', $this->_language()->getPhrase('misc', 'fatal_errors_title'));
+            $this->_tpl()->assign('errors', $this->_getErrors());
+            $this->_tpl()->assign('button', array( 'url' => $_SERVER['SCRIPT_NAME'], 'text' => $this->_language()->getPhrase('misc', 'reload_page')) );
+            exit( $this->_tpl()->draw('run_errors', true) );
         }
     }
     
-    public function language() {
+    private function _language() {
         return $this->_language;
+    }
+    
+    private function _tpl() {
+        return $this->_tpl;
     }
     
     public function form() {
         return $this->_form;
     }
     
-    public function tpl() {
-        return $this->_tpl;
+    public function showHome() {       
+        $form = new NamodgFormRenderer($this->form()->getFields(), self::$_key);
+        
+        $this->_tpl()->assign('form_open', $form->getOpeningHTML());
+        $this->_tpl()->assign('selected', $this->_language()->getPhrase('misc', 'selected'));
+        $this->_tpl()->assign('fields', $this->_getTemplateFields());
+        $this->_tpl()->assign('form_close', $form->getClosingHTML());
+
+        $this->_tpl()->draw('home');
+    }
+    
+    /**
+     * Draws all namodg fields, and return them as an array
+     *
+     * @param boolean $withErrors returns the error of each fields with it
+     * @return array
+     */
+    private function _getTemplateFields($withErrors = false) {
+        
+        $fields = array();
+        $i = 0;
+        
+        if ( $withErrors ) {
+            $errors = $this->form()->getValidationErrors();
+        }
+        
+        foreach ( $this->form()->getFields() as $field ) {
+
+            $fields[$i]['field_html'] = $field->getHTML();
+            $fields[$i]['field_type'] = $field->getType();
+            $fields[$i]['value'] = $field->getValue();
+
+            if ( $withErrors && $errors[ $field->getName() ] ) {
+                $fields[$i]['validation_error'] = $this->_language()->getPhrase('validation', $errors[ $field->getName() ]);
+            }
+
+            if ( $field->getOption('title') ) {
+                $fields[$i]['title'] = $field->getOption('title');
+            }
+
+            if ( ! $field->getOption('label')) {
+                $i++;
+                continue;
+            }
+
+            $fields[$i]['label'] = $field->getOption('label');
+            
+            $labelHTML = '<label ' . ( $field->getOption('id') ? 'for="' . $field->getOption('id') . '"' : '' ) . ' >';
+            $labelHTML .= $field->getOption('label');
+            $labelHTML .= '</label>';
+            $fields[$i]['label_html'] = $labelHTML;
+            $i++;
+        }
+
+        return $fields;
     }
     
     private function _loadLanguage() {
-        $this->_language = new NamodgLanguage($this->_getConfig('language'));
+        $this->_language = new NamodgAppLanguage($this->_getConfig('language'));
         
-        if ( $this->language()->getErrors() ) {
-            $this->_addError( $this->language()->getErrors() );
+        if ( $this->_language()->getErrors() ) {
+            $this->_addError( $this->_language()->getErrors() );
         }
         
         return $this;
@@ -77,13 +138,13 @@ class NamodgApp {
     private function _loadTemplate() {
         $this->_tpl = new RainTPL();
         
-        $this->tpl()->configure('tpl_dir', NAMODG_APP_DIR . 'templates/' . $this->_getConfig('template') . '/');
-        $this->tpl()->configure('cache_dir', NAMODG_APP_DIR . 'cache/');
+        $this->_tpl()->configure('tpl_dir', 'templates/' . $this->_getConfig('template') . '/');
+        $this->_tpl()->configure('cache_dir', 'cache/');
         
-        $this->tpl()->assign('title', $this->_getConfig('page_title') );
-        $this->tpl()->assign('description', $this->_getConfig('description') );
-        $this->tpl()->assign('form_title', $this->_getConfig('form_title') );
-        $this->tpl()->assign('version', Namodg::version);
+        $this->_tpl()->assign('title', $this->_getConfig('page_title') );
+        $this->_tpl()->assign('description', $this->_getConfig('description') );
+        $this->_tpl()->assign('form_title', $this->_getConfig('form_title') );
+        $this->_tpl()->assign('version', Namodg::version);
         
         return $this;
     }
@@ -103,8 +164,8 @@ class NamodgApp {
         return $this;
     }
     
-    private function _getConfig($id) {
-        return $this->_config[$id];
+    private function _getConfig($id = NULL) {
+        return $id ? $this->_config[$id] : $this->_config;
     }
     
     private function _validateRequirements() {
@@ -139,7 +200,7 @@ class NamodgApp {
         $errors = array();
         
         foreach($this->_errors as $error) {
-            $errors[] = $this->language()->getPhrase('errors', $error);
+            $errors[] = $this->_language()->getPhrase('errors', $error);
         }
         
         return $errors;
