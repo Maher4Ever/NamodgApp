@@ -27,6 +27,7 @@ $phrase['message']['multiple_lines_data_title'] = 'المعلومات الإضا
 
 // Mailer
 $phrase['mailer']['sender_name'] = 'سكربت "نموذج"';
+$phrase['mailer']['default_subject'] = 'رسالة جديدة من "نموذج"';
 
 // Javscript Phrases
 $phrase['js']['loading'] = 'الرجاء الإنتظار';
@@ -41,10 +42,10 @@ $phrase['response']['fail_message_headline'] = 'أوبس! عذراً منك زا
 $phrase['response']['fail_message_body'] = 'حالف ساعي بريدنا سوء الحظ عند محاولة إيصال رسالتك. الرجاء منك تركه ينال قسط من الراحة و من ثم حاول من جديد. يمكنك في هذه الأثناء التوجه <a href="/">لرئيسيتنا</a> و إكتشاف أقسام الموقع الأخرى.';
 
 //Errors
-$phrase['errors']['config_not_array'] = 'خيارات التحكم يجب أن تكون على صورة مصفوفة array.';
 $phrase['errors']['language_code_length_not_valid'] = 'خيار اللغة يجب أن يكون عبارة عن حرفين يمثلان إختصار اللغة، مثلاً ar للعربية.';
 $phrase['errors']['language_file_not_found'] = 'ملف اللغة التي تم تحديدها غير موجود في مسار ملفات اللغة languages.';
 $phrase['errors']['no_key'] = 'الرقم السري غير صحيح.';
+$phrase['errors']['weak_key'] = NULL;
 $phrase['errors']['method_not_valid'] = 'طرق الإتصال المسموح بها هي POST و GET فقط.';
 $phrase['errors']['receipt_email_not_valid'] = 'إيميل المستلم في ملف الإعدادات غير صحيح، الرجاء إعداده ليتم إيصال رسائلك إليه.';
 $phrase['errors']['reply_to_field_name_not_valid'] = 'أسم حقل "إيميل الرد" في ملف الإعدادات غير صحيح، الرجاء التاكد من أن الأسم يطابق أسم الحقل المراد في ملف index.php';
