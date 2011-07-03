@@ -56,10 +56,7 @@ class NamodgApp {
              ->_loadTemplate();
         
         if ( $this->_getErrors() ) {
-            $this->_tpl()->assign('error_title', $this->_language()->getPhrase('misc', 'fatal_errors_title'));
-            $this->_tpl()->assign('errors', $this->_getErrors());
-            $this->_tpl()->assign('button', array( 'url' => $_SERVER['SCRIPT_NAME'], 'text' => $this->_language()->getPhrase('misc', 'reload_page')) );
-            exit( $this->_tpl()->draw('run_errors', true) );
+            $this->_showFatalErrors();
         }
     }
     
@@ -75,7 +72,16 @@ class NamodgApp {
         return $this->_form;
     }
     
-    public function showHome() {        
+    public function showHome() {
+        
+        if ( $this->_getConfig('replay_to_field_name') && 
+             ! empty($this->_getConfig('replay_to_field_name')) && 
+             ! array_key_exists($this->_getConfig('replay_to_field_name'), $this->_fields) 
+            ) {
+            $this->_addError('reply_to_field_name_not_valid');
+            $this->_showFatalErrors();
+        }
+        
         $form = new NamodgFormRenderer($this->form()->getFields(), self::$_key);
         $form->addAttr('action', $this->form()->getAttr('url'));
         $form->addAttr('method', $this->form()->getAttr('method'));
@@ -108,7 +114,6 @@ class NamodgApp {
             $form->addClass( $this->form()->getAttr('class') );
         }
         
-        $this->_tpl()->configure( 'check_template_update', true );
         $this->_tpl()->assign('form_open', $form->getOpeningHTML());
         $this->_tpl()->assign('selected', $this->_language()->getPhrase('misc', 'selected'));
         $this->_tpl()->assign('fields', $this->_getTemplateFields( $withErrors = true ));
@@ -139,7 +144,7 @@ class NamodgApp {
         $this->_tpl()->draw('sending_failed');
     }
 
-
+    
     public function sendEmail() {
         $mailer = new NamodgAppMailer();
         
@@ -163,6 +168,13 @@ class NamodgApp {
      */
     public function isAjaxRequest() {
         return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+    }
+    
+    private function _showFatalErrors() {
+        $this->_tpl()->assign('error_title', $this->_language()->getPhrase('misc', 'fatal_errors_title'));
+        $this->_tpl()->assign('errors', $this->_getErrors());
+        $this->_tpl()->assign('button', array( 'url' => $_SERVER['SCRIPT_NAME'], 'text' => $this->_language()->getPhrase('misc', 'reload_page')) );
+        exit( $this->_tpl()->draw('run_errors', true) );
     }
     
     private function _generateEmail($type = NULL) {
@@ -302,7 +314,7 @@ class NamodgApp {
     }
     
     private function _getConfig($id = NULL) {
-        return $id ? $this->_config[$id] : $this->_config;
+        return $id ? ( isset($this->_config[$id]) ? $this->_config[$id] : false ) : $this->_config;
     }
     
     private function _validateRequirements() {
