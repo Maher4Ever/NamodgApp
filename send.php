@@ -16,13 +16,13 @@ if ( ! $app->form()->canBeProcessed() ) {
 $app->form()->validate();
 
 if ( ! $app->form()->isDataValid() ) {
-    $app->showValidation();
+    $app->showValidationFailure();
 }
 
 $app->sendEmail();
 
 if ( $app->isEmailSent() ) {
-    $app->showConformation();   
+    $app->showSendConformation();   
 } else {
-    $app->showFail();
+    $app->showSendFailure();
 }

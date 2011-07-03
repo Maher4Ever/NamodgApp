@@ -290,6 +290,8 @@ class Namodg {
         
         // Pass the arguments to the class and add it to the fields array
         $this->_addField( $field->newInstanceArgs($arguments) );
+        
+        return $this;
     }
 
     /**
