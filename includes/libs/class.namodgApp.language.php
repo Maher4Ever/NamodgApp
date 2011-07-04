@@ -28,7 +28,9 @@ class NamodgAppLanguage {
      * @var string only two chars!
      */
     private $_language = 'ar';
-
+    
+    private $_rtl = true;
+    
     /**
      * The phrases of this language
      * 
@@ -112,8 +114,18 @@ class NamodgAppLanguage {
         }
         
         $this->_phrases = $phrase;
+        
+        if ( ! is_bool($language['rtl']) ) {
+            $this->_addError('language_rtl_config_not_valid');
+        } else {
+            $this->_rtl = $language['rtl'];
+        }
     }
-    
+      
+    public function isRTL() {
+        return $this->_rtl;
+    }
+
     /**
      * Check the language ID, this ID has to be 2 charecters long
      * 
