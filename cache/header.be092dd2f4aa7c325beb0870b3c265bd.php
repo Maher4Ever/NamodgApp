@@ -6,7 +6,14 @@
     <meta name="generator" content="Namodg <?php echo $version;?>">
     <meta name="description" content="<?php echo $description;?>">
     <title><?php echo $title;?></title>
+    <?php if( $rtl ){ ?>
+
     <link type="text/css" rel="stylesheet" href="templates/air/includes/../css/main.css">
+    <?php }else{ ?>
+
+    <link type="text/css" rel="stylesheet" href="templates/air/includes/../css/main_ltr.css">
+    <?php } ?>
+
     <!--[if lte IE 7]>
     <link rel="stylesheet" type="text/css" href="templates/air/includes/../css/ie7.css">
     <![endif]-->
