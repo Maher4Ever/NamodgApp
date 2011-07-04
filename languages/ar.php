@@ -15,9 +15,9 @@
  */
 
 /*
- * Language direction, is it rtl (right to left) ?
+ * Language direction, is it ltr (left to right) ?
  */
-$language['rtl'] = true;
+$language['ltr'] = false;
 
 // Validation
 $phrase['validation']['required'] = 'الحقل مطلوب';
@@ -47,18 +47,17 @@ $phrase['response']['fail_message_headline'] = 'أوبس! عذراً منك زا
 $phrase['response']['fail_message_body'] = 'حالف ساعي بريدنا سوء الحظ عند محاولة إيصال رسالتك. الرجاء منك تركه ينال قسط من الراحة و من ثم حاول من جديد. يمكنك في هذه الأثناء التوجه <a href="/">لرئيسيتنا</a> و إكتشاف أقسام الموقع الأخرى.';
 
 //Errors
+$phrase['errors']['config_array_not_valid'] = 'إعدادات نموذج المدخلة غير صحيحة. الرجاء إستخدام ملف الإعدادات الإفتراضي لحل هذه المشكلة.';
 $phrase['errors']['language_code_length_not_valid'] = 'خيار اللغة يجب أن يكون عبارة عن حرفين يمثلان إختصار اللغة، مثلاً ar للعربية.';
 $phrase['errors']['language_file_not_found'] = 'ملف اللغة التي تم تحديدها غير موجود في مسار ملفات اللغة languages.';
-$phrase['errors']['language_rtl_config_not_valid'] = NULL;
+$phrase['errors']['language_rtl_config_not_valid'] = 'ملف اللغة المختار يحتوي على خطأ في إعداد إتجاه اللغة.';
 $phrase['errors']['no_key'] = 'الرقم السري غير صحيح.';
-$phrase['errors']['weak_key'] = NULL;
+$phrase['errors']['weak_key'] = 'مغتاح "نموذج" المدخل ضعيق. المعتاح يجب أن يتكون من ١٠ أحرف على الأقل.';
 $phrase['errors']['method_not_valid'] = 'طرق الإتصال المسموح بها هي POST و GET فقط.';
 $phrase['errors']['receipt_email_not_valid'] = 'إيميل المستلم في ملف الإعدادات غير صحيح، الرجاء إعداده ليتم إيصال رسائلك إليه.';
 $phrase['errors']['reply_to_field_name_not_valid'] = 'أسم حقل "إيميل الرد" في ملف الإعدادات غير صحيح، الرجاء التاكد من أن الأسم يطابق أسم الحقل المراد في ملف index.php';
 $phrase['errors']['mail_function_disabled'] = 'دالة ()mail غير فعالة في هذا الخادم، الرجاء تفعيل هذه الدالة لنتمكن من إرسال رسائلك.';
 $phrase['errors']['cache_not_writable'] = 'مجلد cache ليس قابل للكتابة. الرجاء تغيير تصريحات الملف و السماح بالكتابة فيه.';
-
-$phrase['errors']['config_array_not_valid'] = NULL;
 
 //Misc
 $phrase['misc']['fatal_errors_title'] = 'عذراً، الرجاء تصحيح الأخطاء التالية ليعمل "نموذج" :';

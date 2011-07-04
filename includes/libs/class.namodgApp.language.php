@@ -29,7 +29,7 @@ class NamodgAppLanguage {
      */
     private $_language = 'ar';
     
-    private $_rtl = true;
+    private $_ltr = false;
     
     /**
      * The phrases of this language
@@ -80,8 +80,8 @@ class NamodgAppLanguage {
      * 
      * @return array
      */
-    public function getPhrases() {
-        return (array)$this->_phrases;
+    public function getPhrases($group = NULL) {
+        return $group ? $this->_phrases[ $group ] : $this->_phrases;
     }
     
     public function getErrors() {
@@ -115,15 +115,15 @@ class NamodgAppLanguage {
         
         $this->_phrases = $phrase;
         
-        if ( ! is_bool($language['rtl']) ) {
+        if ( ! is_bool($language['ltr']) ) {
             $this->_addError('language_rtl_config_not_valid');
         } else {
-            $this->_rtl = $language['rtl'];
+            $this->_ltr = $language['ltr'];
         }
     }
       
-    public function isRTL() {
-        return $this->_rtl;
+    public function isLTR() {
+        return $this->_ltr;
     }
 
     /**

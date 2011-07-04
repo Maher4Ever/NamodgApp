@@ -15,9 +15,9 @@
  */
 
 /*
- * Language direction, is it rtl (right to left) ?
+ * Language direction, is it ltr (left to right) ?
  */
-$language['rtl'] = false;
+$language['ltr'] = true;
 
 // Validation
 $phrase['validation']['required'] = 'الحقل مطلوب';

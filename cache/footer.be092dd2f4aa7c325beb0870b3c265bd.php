@@ -20,6 +20,16 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
     <script type="text/javascript" src="templates/air/includes/../js/plugins/namodg.validation.js"></script>
     <script type="text/javascript" src="templates/air/includes/../js/plugins/misc.js"></script>
+    <script type="text/javascript">
+        (function(window, undefined){
+            
+            if ( window.Namodg === undefined ) {
+                window.Namodg = {};
+            }
+            
+            window.Namodg.phrases = <?php echo $js_phrases;?>;
+        })(this);
+    </script>
     <script type="text/javascript" src="templates/air/includes/../js/namodg.main.js"></script>
 </body>
 

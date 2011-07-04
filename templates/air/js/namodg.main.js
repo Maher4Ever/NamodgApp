@@ -18,9 +18,9 @@
 (function (window, $, undefined) {
 
     var document = window.document,
-        location = window.location,
+        location = window.location;
 
-    Namodg = {
+    var Namodg = {
 
         init : function () {
 
@@ -110,12 +110,6 @@
                     onSuccess: function () {
                         return self.preSend();
                     }
-                });
-
-            // Get phrases from server and when they are ready, set the needed phrases
-            $.when( self.getPhrases() )
-                .done(function() {
-                    self.loading.text( self.phrases['loading'] );
                 });
             
             // Browser Back Button Fix
@@ -416,32 +410,6 @@
              return parseInt(jQueryObj.css('marginTop'), 10) + parseInt(jQueryObj.css('marginBottom'), 10);
         },
 
-        getPhrases : function () {
-
-            // Get the name of the object and cache it
-            var self = this;
-
-            // Make a post request to get the phrases
-            return $.post(self.form.attr('action'), {getPhrases: true})
-                .done(function(data) {
-                    // Parse the JSON data
-                    try
-                    {
-                        // Use jquery's default parser
-                        self.phrases = $.parseJSON(data);
-                    }
-                    catch(e)
-                    {
-                        /*
-                         * Sometimes when users save any of the script's files with UTF-8 BOM, the json data generated from the script
-                         * becomes not valid to jQuery's parseJSON() and it throws an error.
-                         * The extra bytes can be handled using the eval() function correctly, but it's slower!
-                         */
-                        self.phrases = eval( "(" + data + ")" );
-                    }
-                });
-        },
-
         coolTips : function () {
 
             var self = this;
@@ -510,7 +478,7 @@
     };
 
     // Make Namodg object global
-    window.Namodg = Namodg;
+    window.Namodg = $.extend(window.Namodg, Namodg);
 
 }(this, jQuery));
 

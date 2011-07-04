@@ -1,0 +1,57 @@
+/**
+ * Namodg - Ajax Forms Generator
+ *
+ * @desc Namodg allows developers to make ajax-driven forms easily. It uses OOP aproach,
+ *       which means developers has to write less code!
+ * @author Maher Salam
+ * @link http://namodg.com
+ * @copyright Copyright (c) 2010-2011, Maher Salam
+ *
+ * Dual licensed under the MIT and GPL licenses:
+ *   @license http://www.opensource.org/licenses/mit-license.php
+ *   @license http://www.gnu.org/licenses/gpl.html
+
+/* General
+=========================================================== */
+body
+{
+	direction:ltr
+}
+
+.tip
+{
+	float:right
+}
+
+#header h1 img
+{
+        margin-left: 0;
+	margin-right:15px
+}
+
+#content .alt,#content .captcha-question
+{
+	float:left
+}
+
+.shade .captcha,.shade select
+{
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+        border:1px solid #D2D9DC;
+	-moz-border-radius-bottomleft:0;
+	-moz-border-radius-topleft:0;
+	-webkit-border-bottom-left-radius:0;
+	-webkit-border-top-left-radius:0;
+	border-bottom-left-radius:0;
+	border-left:0 none;
+	border-top-left-radius:0
+}
+
+#content button,.button
+{
+    	right:30px;
+        left: auto
+}
+

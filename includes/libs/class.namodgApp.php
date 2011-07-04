@@ -290,7 +290,8 @@ class NamodgApp {
         $this->_tpl()->assign('description', $this->_getConfig('description') );
         $this->_tpl()->assign('form_title', $this->_getConfig('form_title') );
         $this->_tpl()->assign('version', Namodg::version);
-        $this->_tpl()->assign('rtl', $this->_language()->isRTL());
+        $this->_tpl()->assign('ltr', $this->_language()->isLTR());
+        $this->_tpl()->assign('js_phrases', json_encode( $this->_language()->getPhrases('js') )) ;
         
         return $this;
     }
