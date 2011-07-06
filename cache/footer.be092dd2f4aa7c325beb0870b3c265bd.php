@@ -27,7 +27,11 @@
                 window.Namodg = {};
             }
             
-            window.Namodg.phrases = <?php echo $js_phrases;?>;
+            window.Namodg.lang ={
+                phrases: <?php echo $js_phrases;?>,
+                ltr: <?php echo $ltr? 'true':'false';?>
+
+            };
         })(this);
     </script>
     <script type="text/javascript" src="templates/air/includes/../js/namodg.main.js"></script>

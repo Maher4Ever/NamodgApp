@@ -25,7 +25,8 @@
         init : function () {
 
             // Get the name of the object and cache it
-            var self = this;
+            var self = this,
+                selectsStylerOptions = {};
 
             // Cache the content div
             self.content = $('#content');
@@ -35,20 +36,24 @@
 
             // Insert the loading form and set its object to a var
             self.loading = $('<div class="loading" />').insertAfter(self.form);
-
+            
+            // Add the loading text
+            self.loading.text(self.lang.phrases['loading']);
+            
             // Set all inputs to a var
             self.inputs = self.form.find(':input').not(':hidden, :submit');
 
             // Set the submit buttom to a var
             self.button = self.form.find(':submit');
             
+            // Build the NamodgSelects options
+            selectsStylerOptions['optionsTop'] = 38;
+            selectsStylerOptions['options' + (self.lang.ltr ? 'Left' : 'Right')] = -6;
+
             // Add focus classes
             self.inputs
                 .filter('select')
-                    .styleNamodgSelects({
-                        optionsRight: -6,
-                        optionsTop: 38
-                    })
+                    .styleNamodgSelects(selectsStylerOptions)
                 .end()
                 .focus(function () {
                     $(this).closest('.shade').addClass('active');
@@ -190,7 +195,7 @@
             var self = this,
 
             // Create the error div and add it to the dom
-                error = $("<div class='ajax-error' style='display: none'></div>").text( self.phrases['ajax_error'] ).insertBefore(self.form),
+                error = $("<div class='ajax-error' style='display: none'></div>").text( self.lang.phrases['ajax_error'] ).insertBefore(self.form),
 
             //	The height is the form + the error div
                 errorHeight = self.getHeight(self.form) + self.getHeight(error);

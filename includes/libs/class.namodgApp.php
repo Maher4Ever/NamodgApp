@@ -43,7 +43,7 @@ class NamodgApp {
                 self::$_key = $config['namodg']['key'];
             }
             
-            if ( filter_var($this->_getConfig('email'), FILTER_VALIDATE_EMAIL) ) {
+            if ( ! filter_var($this->_getConfig('email'), FILTER_VALIDATE_EMAIL) ) {
                  $this->_addError('receipt_email_not_valid');
             }
             
@@ -155,7 +155,7 @@ class NamodgApp {
     }
     
     public function isFormValid() {
-        $replyField = $this->_getConfig('replay_to_field_name');
+        $replyField = $this->_getConfig('reply_to_field_name');
          if ( $replyField && ! empty($replyField) && ! array_key_exists($replyField, $this->form()->getFields()) ) {
             $this->_addError('reply_to_field_name_not_valid');
             return false;

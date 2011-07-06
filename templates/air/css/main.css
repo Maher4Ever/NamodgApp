@@ -283,7 +283,7 @@ body
 
 .namodg-select .toggle-button
 {
-	background:url(../images/form/select-arrow.png) no-repeat top;
+	background:url(../images/form/select-arrow.png) no-repeat left top;
 	cursor:pointer;
 	display:block;
 	float:right;
@@ -352,10 +352,9 @@ body
 	border:1px solid #FFE485;
 	color:#777;
 	font-size:14px;
-	height:40px;
-	line-height:40px;
+        padding:10px;
 	margin-bottom:20px;
-	text-align:center
+	text-align:right
 }
 
 /* No-Ajax Validation Errors

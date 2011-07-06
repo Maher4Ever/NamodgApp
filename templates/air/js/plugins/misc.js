@@ -28,8 +28,7 @@ jQuery.extend(jQuery.easing,{easeOutBack:function(f,a,b,c,d,e){if(e==undefined)e
 
             // Set the defaults for the options' div
             var defaults = {
-                    optionsTop : 0,
-                    optionsRight : 0
+                    optionsTop : 0
                 },
 
            // Extend options with user inputs
@@ -63,7 +62,10 @@ jQuery.extend(jQuery.easing,{easeOutBack:function(f,a,b,c,d,e){if(e==undefined)e
 
                 // An empty array for the options
                     optionElements = [],
-
+                
+                // Holder options
+                    optionsHolderConfig = [],
+                
                 // I don't think this one needs explaination :)
                     i = 0;
 
@@ -88,13 +90,14 @@ jQuery.extend(jQuery.easing,{easeOutBack:function(f,a,b,c,d,e){if(e==undefined)e
                             .click(function () {
                                $selectedHolder.click();
                             });
-
+                
+                // Build the holder position values
+                optionsHolderConfig['top'] = 0 + options.optionsTop;
+                optionsHolderConfig[options.optionsRight ? 'right' : 'left'] = options.optionsRight ? options.optionsRight : options.optionsLeft;
+                
                 $optionsHolder // Fill the options container with the options, then set it's position
                     .html( optionElements.join('') )
-                    .css({
-                        top: 0 + options.optionsTop,
-                        right: 0 + options.optionsRight
-                    });
+                    .css(optionsHolderConfig);
 
 
                 $namodgSelect
