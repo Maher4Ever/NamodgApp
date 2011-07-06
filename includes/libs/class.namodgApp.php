@@ -151,6 +151,11 @@ class NamodgApp {
                ->body($this->_generateEmail())
                ->altBody($this->_generateEmail('txt'));
         
+        if ( $this->_getConfig('reply_to_field_name') ) {
+            $email = $this->form()->getField( $this->_getConfig('reply_to_field_name') )->getCleanedValue();
+            $mailer->replyTo($email);
+        }
+        
         $this->_emailSent = $mailer->send();
     }
     
