@@ -3,7 +3,7 @@
         <title>{$message_title}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
-    <body marginheight="0" dir="rtl" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #e9eef0; padding-top: 20px; font-family: Georgia, 'Times New Roman', Times, serif;" bgcolor="#e9eef0" leftmargin="0">
+    <body marginheight="0" dir="{$ltr? 'ltr' : 'rtl'}" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #e9eef0; padding-top: 20px; font-family: Georgia, 'Times New Roman', Times, serif;" bgcolor="#e9eef0" leftmargin="0">
         <table id="main" cellpadding="5" cellspacing="0" border="0" align="center" width="460">
             <tbody>
                {if="$data.one_line"}
@@ -21,7 +21,7 @@
                                                 {loop="$data.one_line"}
                                                 <tr>
                                                     <td>
-                                                        <h3 style="font-size: 16px; font-weight: normal; margin: 0 0 0 10px; padding: 0; font-family: Georgia, 'Times New Roman', Times, serif; color: #b4cdd6; float: right;">{$value.id}</h3>
+                                                        <h3 style="font-size: 16px; font-weight: normal; margin: {$ltr? '0 10px 0 0' : '0 0 0 10px'}; padding: 0; font-family: Georgia, 'Times New Roman', Times, serif; color: #b4cdd6; float: {$ltr? 'left' : 'right'};">{$value.id}</h3>
                                                         <p style="font-weight: normal; font-size: 16px; font-family: Georgia, 'Times New Roman', Times, serif; margin: 0; color: #858585; padding: 0;">{$value.value}</p>
                                                     </td>
                                                 </tr>

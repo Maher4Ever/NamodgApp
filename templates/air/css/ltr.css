@@ -68,7 +68,8 @@ body
 #content button,.button
 {
     	right:30px;
-        left: auto
+        left: auto;
+        font-size: 14px;
 }
 
 /* Namodg Select
@@ -112,4 +113,37 @@ body
 {
 	padding-right:0;
         padding-left:20px;
+}
+
+/* Response
+=========================================================== */
+#response
+{
+	background-image:url(../images/response/bg-ltr.png);
+        background-position: 300px top;
+}
+
+#response .success-icon
+{
+	right:20px;
+        left:auto;
+}
+
+#response .fail-icon
+{
+	right:18px;
+        left:auto;       
+}
+
+#response h2
+{
+    	margin:0 120px 15px 0;
+        font-size: 22px;
+}
+
+#response p
+{
+    margin-left: 0;
+    margin-right: 120px;
+    font-size: 13px;
 }

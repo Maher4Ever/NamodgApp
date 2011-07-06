@@ -8,7 +8,11 @@
 
 <div id="content">
     <div id="response" class="success">
-        <img src="images/response/success-icon.png" alt="{$status}" class="success-icon">
+        {if="$ltr"}
+        <img src="images/response/success-icon-ltr.png" alt="{$status}" class="fail-icon">
+        {else}
+        <img src="images/response/success-icon.png" alt="{$status}" class="fail-icon">
+        {/if}
         <h2>{$headline}</h2>
         <p>{$message}</p>
         <a href="{$button.url}" class="button">{$button.text}</a>
