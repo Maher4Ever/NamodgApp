@@ -1,0 +1,3 @@
+[submodule "includes/libs/namodg"]
+	path = includes/libs/namodg
+	url = git@github.com:Maher4Ever/Namodg.git
