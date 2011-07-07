@@ -1,13 +1,14 @@
 <?php
 
 /**
- * Namodg - Ajax Forms Generator
- *
- * @desc Namodg allows developers to make ajax-driven forms easily. It uses OOP aproach,
- *       which means developers has to write less code!
- * @author Maher Salam <admin@namodg.com>
+ * Namodg - Form Generatorr 
+ * ========================
+ * 
+ * Namodg is a class which allows to easily create, render, validate and process forms
+ * 
+ * @author Maher Sallam <admin@namodg.com>
  * @link http://namodg.com
- * @copyright Copyright (c) 2010-2011, Maher Salam
+ * @copyright Copyright (c) 2010-2011, Maher Sallam
  *
  * Dual licensed under the MIT and GPL licenses:
  *   @license http://www.opensource.org/licenses/mit-license.php
@@ -21,11 +22,11 @@ require_once 'class.namodg.field.php';
 require_once 'class.namodg.defaultRenderers.php';
 
 /**
- * Namodg Text Field
- *
- * @desc Used for data of type string
+ * Namodg Text Field, used for one-line string data
+ * 
+ * @package Namodg
  */
-class NamodgField_TextField extends NamodgField {
+class NamodgField_TextField extends NamodgField_Base {
 
     public function isValid() {
         $value = $this->getValue();
@@ -50,9 +51,9 @@ class NamodgField_TextField extends NamodgField {
 }
 
 /**
- * Namodg Textarea
- *
- * @desc Used for multi-line data of type string
+ * Namodg Textarea, used for multi-line string data
+ * 
+ * @package Namodg
  */
 class NamodgField_Textarea extends NamodgField_TextField {
 
@@ -64,11 +65,11 @@ class NamodgField_Textarea extends NamodgField_TextField {
 }
 
 /**
- * Namodg Email Field
- *
- * @desc Used for data of type string/email
+ * Namodg Email Field, used for email(string) data
+ * 
+ * @package Namodg
  */
-class NamodgField_Email extends NamodgField {
+class NamodgField_Email extends NamodgField_Base {
 
     public function isValid() {
         $value = $this->getValue();
@@ -100,11 +101,11 @@ class NamodgField_Email extends NamodgField {
 }
 
 /**
- * Namodg Number Field
- *
- * @desc Used for data of type integer
+ * Namodg Number Field, used for integer data
+ * 
+ * @package Namodg
  */
-class NamodgField_NumberField extends NamodgField {
+class NamodgField_NumberField extends NamodgField_Base {
 
     public function isValid() {
         $value = $this->getValue();
@@ -136,11 +137,11 @@ class NamodgField_NumberField extends NamodgField {
 }
 
 /**
- * Namodg Select Field
- *
- * @desc Used for a chosable data of type string
+ * Namodg Select Field, used for data inside a dropdown
+ * 
+ * @package Namodg
  */
-class NamodgField_Select extends NamodgField {
+class NamodgField_Select extends NamodgField_Base {
 
     public function __construct($name, $options = array()) {
         $this->_addDefaultOptions(array(
@@ -172,11 +173,11 @@ class NamodgField_Select extends NamodgField {
 }
 
 /**
- * Namodg Captcha Field
- *
- * @desc Used to stop spam
+ * Namodg Captcha Field, a human-verification field used to stop spam
+ * 
+ * @package Namodg
  */
-class NamodgField_Captcha extends NamodgField {
+class NamodgField_Captcha extends NamodgField_Base {
 
     private $_rand1 = NULL;
     private $_rand2 = NULL;
@@ -241,11 +242,11 @@ class NamodgField_Captcha extends NamodgField {
 }
 
 /**
- * Namodg Submit Button
- *
- * @desc Used to submit data
+ * Namodg Submit Button, used to submit form's data
+ * 
+ * @package Namodg
  */
-class NamodgField_Submit extends NamodgField {
+class NamodgField_Submit extends NamodgField_Base {
 
     public function __construct($name, $value, $options = array()) {
         parent::__construct($name, $options);

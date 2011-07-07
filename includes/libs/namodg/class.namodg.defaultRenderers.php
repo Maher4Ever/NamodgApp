@@ -1,13 +1,14 @@
 <?php
 
 /**
- * Namodg - Ajax Forms Generator
- *
- * @desc Namodg allows developers to make ajax-driven forms easily. It uses OOP aproach,
- *       which means developers has to write less code!
- * @author Maher Salam <admin@namodg.com>
+ * Namodg - Form Generatorr 
+ * ========================
+ * 
+ * Namodg is a class which allows to easily create, render, validate and process forms
+ * 
+ * @author Maher Sallam <admin@namodg.com>
  * @link http://namodg.com
- * @copyright Copyright (c) 2010-2011, Maher Salam
+ * @copyright Copyright (c) 2010-2011, Maher Sallam
  *
  * Dual licensed under the MIT and GPL licenses:
  *   @license http://www.opensource.org/licenses/mit-license.php
@@ -20,20 +21,46 @@
 require_once 'class.namodg.renderer.php';
 
 /**
- * This generates the openning of the form ONLY!
+ * This class can be used to render a HTML form with it's fields.
+ * It also offers an API to get parts of the form's HTML so that they can be used elsewhere.
+ * 
+ * @package Namodg
+ * @subpackage NamodgRenderer
  */
-class NamodgFormRenderer extends NamodgRenderer {
+class NamodgFormRenderer extends NamodgRenderer_Base {
     
+    /**
+     * NamodgField objects container
+     *
+     * @var array
+     */
     private $_fields = NULL;
     
+    /**
+     * The key is used to encrypt the hidden Namodg field.
+     * This field has a serialized version of the NamodgField objects
+     *
+     * @var string
+     */
     private static $_key = NULL;
     
+    /**
+     * Initialize the form renderer
+     *
+     * @param array $fields NamodgField objects
+     * @param string $key 
+     */
     public function __construct($fields, $key) {
         parent::__construct('form');
         $this->_fields = $fields;
         self::$_key = $key;
     }
     
+    /**
+     * This allows to get the HTML of the opening form tag
+     *  
+     * @return string 
+     */
     public function getOpeningHTML() {
         $html = '<form ';
         foreach ( $this->getAllAttrs() as $attr => $value) {
@@ -48,7 +75,7 @@ class NamodgFormRenderer extends NamodgRenderer {
     }
 
     /**
-     * Draws the form closing HTML tag
+     * This allows to get the HTML of the closing form tag
      *
      * @return string
      */
@@ -66,6 +93,11 @@ class NamodgFormRenderer extends NamodgRenderer {
         return $html;
     }
     
+    /**
+     * Renders the form's HTML with it's fields
+     * 
+     * @return string
+     */
     public function render() {
        
         // Form beginning tag
@@ -91,6 +123,11 @@ class NamodgFormRenderer extends NamodgRenderer {
         return $html;
     }
     
+    /**
+     * All fields getter method
+     * 
+     * @return array
+     */
     protected function _getFields() {
         return $this->_fields;
     }
@@ -115,16 +152,37 @@ class NamodgFormRenderer extends NamodgRenderer {
 
 /**
  * This is a general field renderer
+ * 
+ * @package Namodg
+ * @subpackage NamodgRenderer
  */
-class NamodgFieldRenderer extends NamodgRenderer {
-
+class NamodgFieldRenderer extends NamodgRenderer_Base {
+    
+    /**
+     * NamodgField object container
+     *
+     * @var NamodgField_Base
+     */
     private $_field = NULL;
-
-    public function __construct($tag, NamodgField $field) {
+    
+    /**
+     * Initialize the field renderer
+     * 
+     * @param string $tag
+     * @param NamodgField_Base $field 
+     */
+    public function __construct($tag, NamodgField_Base $field) {
         parent::__construct($tag);
         $this->_field = $field;
     }
-
+    
+    /**
+     * Helper method, allows to add validation rules to the field.
+     * The added attr can be used by client-side languages to validate the form before the submission.
+     * 
+     * @param string $rule
+     * @return NamodgFieldRenderer 
+     */
     public function addValidationRule($rule) {
         if ( $this->getAttr('data-validation') ) {
             $this->addAttr('data-validation', $this->getAttr('data-validation') . ' ' . $rule);
@@ -133,7 +191,12 @@ class NamodgFieldRenderer extends NamodgRenderer {
         }
         return $this;
     }
-
+    
+    /**
+     * Renders the field's HTML
+     * 
+     * @return string
+     */
     public function render() {
         $html = '<' . $this->getTag() . ' ';
 
@@ -163,11 +226,21 @@ class NamodgFieldRenderer extends NamodgRenderer {
 
         return $html;
     }
-
+    
+    /**
+     *  Field getter method
+     *
+     * @return NamodgField_Base
+     */
     protected function _getField() {
         return $this->_field;
     }
-
+    
+    /**
+     * This allows to get the closing HTML of the field, based on the tag type.
+     * 
+     * @return string
+     */
     protected function _getClosingHTML() {
         switch ( $this->getTag() ) {
             case 'input':
@@ -185,13 +258,26 @@ class NamodgFieldRenderer extends NamodgRenderer {
 
 /**
  * This renders the Namodg Select Field
+ * 
+ * @package Namodg
+ * @subpackage NamodgRenderer
  */
 class NamodgSelectRenderer extends NamodgFieldRenderer {
-
-    public function __construct(NamodgField $field) {
+    
+    /**
+     * Initialize the select field renderer
+     * 
+     * @param NamodgField_Select $field 
+     */
+    public function __construct(NamodgField_Select $field) {
         parent::__construct('select', $field);
     }
-
+    
+    /**
+     * Renders the select field's HTML
+     * 
+     * @return string
+     */
     public function render() {
         $selectField = '<' . $this->getTag() . ' ';
 
@@ -239,6 +325,12 @@ class NamodgSelectRenderer extends NamodgFieldRenderer {
         return $selectField . $options . '</select>';
     }
 
+    /**
+     * This allows to get the closing HTML of the select field.
+     * Note: This is used just to confirm to Namodg Spec!
+     * 
+     * @return string
+     */
     protected function _getClosingHTML() {
         return '>';
     }

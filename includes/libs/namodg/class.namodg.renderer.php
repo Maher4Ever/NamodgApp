@@ -1,13 +1,14 @@
 <?php
 
 /**
- * Namodg - Ajax Forms Generator
- *
- * @desc Namodg allows developers to make ajax-driven forms easily. It uses OOP aproach,
- *       which means developers has to write less code!
- * @author Maher Salam <admin@namodg.com>
+ * Namodg - Form Generatorr 
+ * ========================
+ * 
+ * Namodg is a class which allows to easily create, render, validate and process forms
+ * 
+ * @author Maher Sallam <admin@namodg.com>
  * @link http://namodg.com
- * @copyright Copyright (c) 2010-2011, Maher Salam
+ * @copyright Copyright (c) 2010-2011, Maher Sallam
  *
  * Dual licensed under the MIT and GPL licenses:
  *   @license http://www.opensource.org/licenses/mit-license.php
@@ -15,9 +16,12 @@
  */
 
 /**
- * Set the rules for all renderers
+ * Set the rules for all renderers. 
+ * 
+ * @package Namodg
+ * @subpackage NamodgRenderer
  */
-interface Renderable {
+interface NamodgRenderer {
 
     public function getTag();
 
@@ -29,12 +33,13 @@ interface Renderable {
 }
 
 /**
- * The blueprint of all renderers
- *
- * @desc Set the default behavior of render objects. It has extra helper methods
- *       like addClass() and setID(). The renderer can be used to render any HTML tag.
+ * The blueprint of all renderers. It sets the default behavior of render objects. It has extra helper methods
+ * like addClass() and setID(). This renderer can be used to render any HTML tag.
+ * 
+ * @package Namodg
+ * @subpackage NamodgRenderer
  */
-abstract class NamodgRenderer implements Renderable {
+abstract class NamodgRenderer_Base implements NamodgRenderer {
 
     /**
      * HTML Tag container
@@ -70,18 +75,18 @@ abstract class NamodgRenderer implements Renderable {
     /**
      * Adds a new attribute to the attrs array
      * 
-     * @param string $attrID
+     * @param string $name
      * @param stinrg $value
      * @return $this Allows chaining
      */
-    public function addAttr($attrID, $value) {
+    public function addAttr($name, $value) {
 
-        $attrID = strtolower($attrID);
+        $name = strtolower($name);
 
-        if ($attrID == 'id') {
+        if ($name == 'id') {
             $this->setID($value);
         } else {
-            $this->_attrs[$attrID] = $value;
+            $this->_attrs[$name] = $value;
         }
         
         return $this;
@@ -90,11 +95,11 @@ abstract class NamodgRenderer implements Renderable {
     /**
      * Atrribute getter
      *
-     * @param string $attrID
+     * @param string $name
      * @return string
      */
-    public function getAttr($attrID) {
-        return isset($this->_attrs[$attrID]) ? $this->_attrs[$attrID] : NULL;
+    public function getAttr($name) {
+        return isset($this->_attrs[$name]) ? $this->_attrs[$name] : NULL;
     }
 
     /**
