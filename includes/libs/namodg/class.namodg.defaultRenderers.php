@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Namodg - Form Generatorr 
+ * Namodg - Form Generator 
  * ========================
  * 
  * Namodg is a class which allows to easily create, render, validate and process forms
