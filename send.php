@@ -23,8 +23,8 @@
 require_once 'includes/bootstrap.php';
 
 /**
- * Check the data passed to this file. If it's not valid and can't be processed,
- * redirect the user to the homepage.
+ * Check the data passed to this file. If there is no data or the data
+ * can't be decrypted using the key, redirect the user to the homepage.
  */
 if ( ! $app->form()->canBeProcessed() ) {
     header('Location: index.php');
