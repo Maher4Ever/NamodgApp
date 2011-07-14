@@ -22,7 +22,6 @@
  */
 require_once 'namodg/class.namodg.php';
 require_once 'class.namodgApp.language.php';
-require_once 'class.namodgApp.mailer.php';
 require_once 'class.rain.tpl.php';
 
 /**
@@ -260,24 +259,50 @@ class NamodgApp {
     }
     
     /**
-     * Sends an email using NamodgAppMailer. It should be noted that data must be
+     * Sends an email using Swift. It should be noted that data must be
      * validated before attempting to send it.
      */
     public function sendEmail() {
-        $mailer = new NamodgAppMailer();
         
-        $mailer->from($this->_language()->getPhrase('mailer', 'sender_name'), $this->_getConfig('email') )
-               ->to($this->_getConfig('email'))
-               ->subject($this->_getConfig('email_title') ? $this->_getConfig('email_title') : $this->_language()->getPhrase('mailer', 'default_subject'))
-               ->body($this->_generateEmail())
-               ->altBody($this->_generateEmail('txt'));
+        require_once NAMODG_APP_DIR  . 'includes/libs/swift/swift_required.php';
         
+        $message = Swift_Message::newInstance();
+        
+        $message
+            ->setSubject( $this->_getConfig('email_title') ? 
+                            $this->_getConfig('email_title') : 
+                            $this->_language()->getPhrase('mailer', 'default_subject') 
+                        )
+
+            ->setFrom(array($this->_getConfig('email') => $this->_language()->getPhrase('mailer', 'sender_name')))
+
+            ->setTo($this->_getConfig('email'))
+
+            ->setBody($this->_generateEmail(), 'text/html')
+
+            ->addPart($this->_generateEmail('txt'), 'text/plain');
+                
         if ( $this->_getConfig('reply_to_field_name') ) {
             $email = $this->form()->getField( $this->_getConfig('reply_to_field_name') )->getCleanedValue();
-            $mailer->replyTo($email);
+            $message->setReplyTo($email);
         }
         
-        $this->_emailSent = $mailer->send();
+        // Add NamodgApp header
+        $message->getHeaders()->addTextHeader('X-Generator', 'NamodgApp v1.4');
+        
+        try { // Try sending using sendmail
+            $transport = Swift_SendmailTransport::newInstance();
+            $mailer = Swift_Mailer::newInstance($transport);
+            $this->_emailSent =(bool)$mailer->send($message);
+        } catch(Swift_Transport_TransportException $e) { // Can't use sendmail, try mail()
+            $transport = Swift_MailTransport::newInstance();  
+            $mailer = Swift_Mailer::newInstance($transport);
+            $this->_emailSent = (bool)$mailer->send($message);  
+        } catch(Swift_TransportException $e) { // Not working too, we can't do anything!
+            @error_log('NamodgApp: mail() function is activated but unable to send emails. Please consult your server admins about this problem', 0);
+            $this->_emailSent = false;
+        }
+        
     }
     
     /**
