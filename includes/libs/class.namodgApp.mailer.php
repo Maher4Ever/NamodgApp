@@ -1,13 +1,16 @@
 <?php
 
 /**
- * Namodg - Ajax Forms Generator
- *
- * @desc Namodg allows developers to make ajax-driven forms easily. It uses OOP aproach,
- *       which means developers has to write less code!
- * @author Maher Salam <admin@namodg.com>
+ * NamodgApp - A beautiful ajax form
+ * ========================
+ * 
+ * NamodgApp is customizable, configurable, ajax application which can be used
+ * to recieve data from users. It's form is generated using Namodg which allows
+ * developers to eaisly extend and change the functionality of NamodgApp.
+ * 
+ * @author Maher Sallam <admin@namodg.com>
  * @link http://namodg.com
- * @copyright Copyright (c) 2010-2011, Maher Salam
+ * @copyright Copyright (c) 2010-2011, Maher Sallam
  *
  * Dual licensed under the MIT and GPL licenses:
  *   @license http://www.opensource.org/licenses/mit-license.php
@@ -16,76 +19,102 @@
 
 /**
  * Namodg Mailer
- *
- * @ver 1.1
- * @package Namodg
- * @since Namodg 1.3
+ * 
+ * This is a wrapper around php's mail() to allow sening email in a OOP way.
+ * 
+ * @package NamodgApp
  */
 class NamodgAppMailer {
-
+    
     /**
-     * @var string The reciever email
+     * Mailer current version
+     */
+    const version = '1.2';
+    
+    /**
+     * Reciever email
+     * 
+     * @var string
      */
     private $_to = '';
 
     /**
-     * @var string The sender email
+     * Sender email
+     * 
+     * @var string
      */
     private $_from = '';
 
     /**
-     * @var string The Reply-To email
+     * Reply-To email
+     * 
+     * @var string
      */
     private $_replyTo = NULL;
 
     /**
-     * @var string The email subject (default in $_phrase)
+     * Email subject
+     * 
+     * @var string
      */
     private $_subject = '';
 
     /**
-     * @var array The message (html + plain)
+     * The message (html + plain)
+     * 
+     * @var array
      */
     private $_body = array();
 
     /**
-     * @var array The message headers used in mail()
+     * Message headers used in mail()
+     * 
+     * @var array
      */
     private $_headers = array();
 
     /**
-     * @var string The email charset (default UTF-8)
+     * Email charset
+     * 
+     * @var string
      */
     private $_charset = 'UTF-8';
 
     /**
-     * @var string The email encoding
+     * Email encoding
+     * 
+     * @var string
      */
     private $_encoding = '8bit';
 
     /**
-     * @var string The email id (used in the boundary too)
+     * Email id (used in the boundary too)
+     * 
+     * @var string
      */
     private $_id = '';
 
     /**
-     * @var string Used to connect the html and text parts of the message
+     * Used to connect the html and text parts of the message
+     * 
+     * @var string
      */
     private $_boundary = '';
 
     /**
-     * Fill some important vars at the runtime
+     * Fill some important vars at the run-time
      */
     public function __construct() {
-        $this->_id = md5(uniqid(time()));
+        $this->_id = sh1(uniqid(microtime()));
         $this->_boundary = "b_" . $this->_id;
     }
 
     /**
-     * Set the sender of the mail
+     * Sets the sender of the mail
      *
      * @param string $name
      * @param string $email Must be a valid email (not checked in the mailer)
+     * @return $this Allows chaining
      */
     public function from($name, $email) {
         $this->_from = $name . ' <' . $email . '>';
@@ -93,9 +122,10 @@ class NamodgAppMailer {
     }
 
     /**
-     * Set the mail recipient
+     * Sets the mail recipient
      *
-     * @param string $email Email address, accept both a single address or an array of addresses
+     * @param mixen $email Email address, accepts both a single address or an array of addresses
+     * @return $this Allows chaining
      */
     public function to($email) {
         ( is_array($email) ) ? $this->_to = implode(', ', $email) : $this->_to = $email;
@@ -103,9 +133,10 @@ class NamodgAppMailer {
     }
 
     /**
-     * Set the reply-to email
-	 *
+     * Sets the reply-to email
+     * 
      * @param string $email Email address
+     * @return $this Allows chaining
      */
     public function replyTo($email) {
         $this->_replyTo = $email;
@@ -113,9 +144,10 @@ class NamodgAppMailer {
     }
 
     /**
-     * Set the email subject
+     * Sets the email subject
      *
-     * @param string $subject The email subject
+     * @param string $subject Email subject
+     * @return $this Allows chaining
      */
     public function subject($subject) {
         $this->_subject = $subject;
@@ -123,54 +155,25 @@ class NamodgAppMailer {
     }
 
     /**
-     * Make the plain part of the message
+     * Sets the plain part of the message
      *
-     * @param srting $body
+     * @param srting $content
+     * @return $this Allows chaining
      */
-    public function altBody($body) {
-
-        $this->_body['plain'] = '--' . $this->_boundary . PHP_EOL;
-        $this->_body['plain'] .= "Content-Type: text/plain; charset=" . $this->_charset . PHP_EOL;
-        $this->_body['plain'] .= "Content-Transfer-Encoding: " . $this->_encoding . PHP_EOL . PHP_EOL;
-
-        $this->_body['plain'] .= $body . PHP_EOL;
+    public function altBody($content) {
+        $this->_addBodyPart('plain', $content);
         return $this;
     }
 
     /**
-     * Make the html part of the message
+     * Sets the html part of the message
      *
      * @param srting $body
+     * @return $this Allows chaining
      */
     public function body($body) {
-
-        $this->_body['html'] = '--' . $this->_boundary . PHP_EOL;
-        $this->_body['html'] .= "Content-Type: text/html; charset=" . $this->_charset . PHP_EOL;
-        $this->_body['html'] .= "Content-Transfer-Encoding: " . $this->_encoding . PHP_EOL . PHP_EOL;
-
-        $this->_body['html'] .= $body . PHP_EOL;
+        $this->_addBodyPart('html', $content);
         return $this;
-    }
-
-    /**
-     * Make the headers of the the mail()
-     */
-    private function _makeHeaders() {
-
-        $this->_headers['From'] = $this->_from;
-        if ( $this->_replyTo ) 
-            $this->_headers['Reply-To'] = $this->_replyTo;
-        $this->_headers["Mime-Version"] = "1.0";
-        $this->_headers["Content-Type"] = "multipart/alternative; boundary=\"$this->_boundary\"";
-        $this->_headers["X-Mailer"] = "Namodg-Mailer [v1.1]";
-        $this->_headers["Date"] = self::RFCDate();
-        $this->_headers["Message-ID"] = '<' . $this->_id . '@' . $_SERVER['SERVER_NAME'] . '>';
-
-        $this->_headers['all'] = '';
-
-        foreach ($this->_headers as $hdr => $val) {
-            $this->_headers['all'] .= $hdr . ': ' . $val . PHP_EOL;
-        }
     }
 
     /**
@@ -194,6 +197,7 @@ class NamodgAppMailer {
     /**
      * Returns the proper RFC 822 formatted date.
      *
+     * @package PHPMailer
      * @return string
      * @static
      */
@@ -205,6 +209,43 @@ class NamodgAppMailer {
         $result = sprintf("%s %s%04d", date('D, j M Y H:i:s'), $tzs, $tz);
 
         return $result;
+    }
+    
+    /**
+     * Adds a body part to the body array
+     * 
+     * @param string $type (plain or html)
+     * @param string $content
+     * @return $this Allows chaining
+     */
+    private function _addBodyPart($type, $content) {
+        $this->_body[$type] = '--' . $this->_boundary . PHP_EOL;
+        $this->_body[$type] .= 'Content-Type: text/' . $type . '; charset=' . $this->_charset . PHP_EOL;
+        $this->_body[$type] .= 'Content-Transfer-Encoding: ' . $this->_encoding . PHP_EOL . PHP_EOL;
+
+        $this->_body[$type] .= $content . PHP_EOL;
+        return $this;
+    }
+    
+    /**
+     * Generates the headers
+     */
+    private function _makeHeaders() {
+
+        $this->_headers['From'] = $this->_from;
+        if ( $this->_replyTo ) 
+            $this->_headers['Reply-To'] = $this->_replyTo;
+        $this->_headers["Mime-Version"] = "1.0";
+        $this->_headers["Content-Type"] = "multipart/alternative; boundary=\"$this->_boundary\"";
+        $this->_headers["X-Mailer"] = "Namodg-Mailer " . self::$version;
+        $this->_headers["Date"] = self::RFCDate();
+        $this->_headers["Message-ID"] = '<' . $this->_id . '@' . $_SERVER['SERVER_NAME'] . '>';
+
+        $this->_headers['all'] = '';
+
+        foreach ($this->_headers as $hdr => $val) {
+            $this->_headers['all'] .= $hdr . ': ' . $val . PHP_EOL;
+        }
     }
 
 }

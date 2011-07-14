@@ -26,7 +26,6 @@ $phrase['validation']['not_number'] = 'القيمة المدخلة ليست رق
 $phrase['validation']['captcha_answer_wrong'] = 'جواب سؤال التحقق غير صحيح';
 
 // Email
-$phrase['message']['message_title'] = 'رسالة جديدة من نموذج';
 $phrase['message']['one_line_data_title'] = 'المعلومات الأساسية';
 $phrase['message']['multiple_lines_data_title'] = 'المعلومات الإضافية';
 
@@ -47,6 +46,7 @@ $phrase['response']['fail_message_headline'] = 'أوبس! عذراً منك زا
 $phrase['response']['fail_message_body'] = 'حالف ساعي بريدنا سوء الحظ عند محاولة إيصال رسالتك. الرجاء منك تركه ينال قسط من الراحة و من ثم حاول من جديد. يمكنك في هذه الأثناء التوجه <a href="/">لرئيسيتنا</a> و إكتشاف أقسام الموقع الأخرى.';
 
 //Errors
+$phrase['errors']['php_version_not_supported'] = 'نسخة PHP المستخدمة غير مدعومة. الرجاء الترقية إلى نسخة ٥.٢.٠ أو أكثر ليعمل نموذج.';
 $phrase['errors']['config_array_not_valid'] = 'إعدادات نموذج المدخلة غير صحيحة. الرجاء إستخدام ملف الإعدادات الإفتراضي لحل هذه المشكلة.';
 $phrase['errors']['language_code_length_not_valid'] = 'خيار اللغة يجب أن يكون عبارة عن حرفين يمثلان إختصار اللغة، مثلاً ar للعربية.';
 $phrase['errors']['language_file_not_found'] = 'ملف اللغة التي تم تحديدها غير موجود في مسار ملفات اللغة languages.';

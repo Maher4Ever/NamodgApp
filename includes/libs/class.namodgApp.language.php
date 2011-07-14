@@ -1,13 +1,16 @@
 <?php
 
 /**
- * Namodg - Ajax Forms Generator
- *
- * @desc Namodg allows developers to make ajax-driven forms easily. It uses OOP aproach,
- *       which means developers has to write less code!
- * @author Maher Salam <admin@namodg.com>
+ * NamodgApp - A beautiful ajax form
+ * ========================
+ * 
+ * NamodgApp is customizable, configurable, ajax application which can be used
+ * to recieve data from users. It's form is generated using Namodg which allows
+ * developers to eaisly extend and change the functionality of NamodgApp.
+ * 
+ * @author Maher Sallam <admin@namodg.com>
  * @link http://namodg.com
- * @copyright Copyright (c) 2010-2011, Maher Salam
+ * @copyright Copyright (c) 2010-2011, Maher Sallam
  *
  * Dual licensed under the MIT and GPL licenses:
  *   @license http://www.opensource.org/licenses/mit-license.php
@@ -15,20 +18,28 @@
  */
 
 /**
- * Namodg Language
- *
- * @desc Allow the translation of Namodg later on
+ * Namodg Languages' Controller
+ * 
+ * Internationalization (I18n) layer. It's used to get phrases and info over
+ * the selected language.
+ * 
+ * @package NamodgApp
  */
 class NamodgAppLanguage {
 
     /**
      * Language ID
      *
-     * @see NamodgLanguage::isCodeVlid()
-     * @var string only two chars!
+     * @see NamodgLanguage::isCodeValid()
+     * @var string (only two chars!)
      */
     private $_language = 'ar';
     
+    /**
+     * Language direction (Left to right ?)
+     * 
+     * @var boolean
+     */
     private $_ltr = false;
     
     /**
@@ -37,7 +48,12 @@ class NamodgAppLanguage {
      * @var array
      */
     private $_phrases = array();
-
+    
+    /**
+     * Class errors.
+     * 
+     * @var array
+     */
     private $_errors = array();
     
     /**
@@ -55,7 +71,7 @@ class NamodgAppLanguage {
                throw new NamodgAppException('language_code_length_not_valid'); 
             }
             
-            $this->_language = (string)$lang;
+            $this->_language = $lang;
             
         } catch( NamodgAppException $e ) {
             $this->_addError( $e->getMessage() );
@@ -84,50 +100,76 @@ class NamodgAppLanguage {
         return $group ? $this->_phrases[ $group ] : $this->_phrases;
     }
     
+    /**
+     * Class errors getter.
+     * 
+     * @return array
+     */
     public function getErrors() {
         return empty($this->_errors) ? FALSE : $this->_errors;
     }
     
+    /**
+     * Loads the language's phrases from the languages directory,
+     * then adds them to the phrases array.
+     */
     private function _loadPhrases() {
         
         $file = NAMODG_APP_DIR . 'languages/' . $this->_language . '.php';
         
         try {
-            if ( ! file_exists($file) ) {
-
+            
+            // Check language file
+            if ( ! file_exists($file) ) { 
                if ( $this->_language == 'ar' ) {
+                   
+                   // If we are here, then the default language file is doesn't exist,
+                   // so print an error and exit.
                    exit('NamodgApp Error: Default language file "ar.php" doesn\'t exist. Languages directory: "' . NAMODG_APP_DIR . 'languages"');
+                   
                } else {
+                   // The requested language is not the default, so just  throw an error
                    throw new NamodgAppException('language_file_not_found');
                }
-
             }
-        } catch( NamodgAppException $e ) {
-            $this->_addError( $e->getMessage() );
-            $file = NAMODG_APP_DIR . 'languages/ar.php';
-        }
-        
-        include $file;
+            
+            include $file;
 
-        if ( ! isset ($phrase) || ! is_array($phrase) ) {
-            exit('NamodgApp Error: Phrases array "$phrase" couldn\'t be found inside the language file "' . $file . '"');
-        }
+            if ( ! isset ($phrase) || ! is_array($phrase) ) {
+                exit('NamodgApp Error: Phrases array "$phrase" couldn\'t be found inside the language file "' . $file . '"');
+            }
+
+            $this->_phrases = $phrase;
+
+            if ( ! is_bool($language['ltr']) ) {
+                $this->_addError('language_rtl_config_not_valid');
+            } else {
+                $this->_ltr = $language['ltr'];
+            }
         
-        $this->_phrases = $phrase;
-        
-        if ( ! is_bool($language['ltr']) ) {
-            $this->_addError('language_rtl_config_not_valid');
-        } else {
-            $this->_ltr = $language['ltr'];
-        }
+        } catch( NamodgAppException $e ) { // Language not found
+            
+            $this->_addError( $e->getMessage() );
+            
+            // Default to the default language
+            $this->_language = 'ar';
+            
+            // Try to load the default language
+            $this->_loadPhrases();
+        } 
     }
-      
+    
+    /**
+     * Language direction getter (ltr ?)
+     * 
+     * @return boolean
+     */
     public function isLTR() {
         return $this->_ltr;
     }
 
     /**
-     * Check the language ID, this ID has to be 2 charecters long
+     * Checks the language ID, this ID has to be 2 charecters long
      * 
      * @param string $lang
      * @return boolean
@@ -154,6 +196,11 @@ class NamodgAppLanguage {
         return (strlen($lang) == 2 && in_array($lang, $langCodes));
     }
     
+    /**
+     * Adds errors to the errors' array
+     * 
+     * @param string $error 
+     */
     private function _addError($error) {
         $this->_errors[] = $error;
     }

@@ -46,6 +46,7 @@ $phrase['response']['fail_message_headline'] = 'Oops, Something went wrong!';
 $phrase['response']['fail_message_body'] = 'Our mailman has had bad luck while trying to deliver your message. Please let him rest for a while and then try again. In the meantime you could check out our <a href="/">homepage</a> and explore the rest of our website.';
 
 //Errors
+$phrase['errors']['php_version_not_supported'] = 'The used PHP version is not supported. Please upgrade to version 5.2.0 or higher.';
 $phrase['errors']['config_array_not_valid'] = 'The enterd configurations are not valid. Please use the default configuration file to solve this problem.';
 $phrase['errors']['language_code_length_not_valid'] = 'The language configuration should be 2 charecters long. For example: "en" for English.';
 $phrase['errors']['language_file_not_found'] = 'The selected language file doesn\'t exist in the languages folder.';
