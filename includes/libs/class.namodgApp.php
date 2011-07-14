@@ -290,18 +290,27 @@ class NamodgApp {
         // Add NamodgApp header
         $message->getHeaders()->addTextHeader('X-Generator', 'NamodgApp v1.4');
         
+		echo $message->getHeaders()->toString();
+		
+		$transport = Swift_MailTransport::newInstance();  
+		$mailer = Swift_Mailer::newInstance($transport);
+		$this->_emailSent = @$mailer->send($message); 
+		
         try { // Try sending using sendmail
             $transport = Swift_SendmailTransport::newInstance();
             $mailer = Swift_Mailer::newInstance($transport);
-            $this->_emailSent =(bool)$mailer->send($message);
-        } catch(Swift_Transport_TransportException $e) { // Can't use sendmail, try mail()
+            $this->_emailSent = $mailer->send($message);
+        } catch(Swift_TransportException $e) { // Can't use sendmail, try mail()
             $transport = Swift_MailTransport::newInstance();  
             $mailer = Swift_Mailer::newInstance($transport);
-            $this->_emailSent = (bool)$mailer->send($message);  
-        } catch(Swift_TransportException $e) { // Not working too, we can't do anything!
-            @error_log('NamodgApp: mail() function is activated but unable to send emails. Please consult your server admins about this problem', 0);
-            $this->_emailSent = false;
+            $this->_emailSent = @$mailer->send($message);  
         }
+		
+		if ( ! $this->_emailSent ) {
+			@error_log('NamodgApp: mail() function is activated but unable to send emails. Please consult your server admins about this problem', 0);
+		} else {
+			$this->_emailSent = (bool)$this->_emailSent;
+		}
         
     }
     
