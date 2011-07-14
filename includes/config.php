@@ -1,13 +1,16 @@
 <?php
 
 /**
- * Namodg - Ajax Forms Generator
- *
- * @desc Namodg allows developers to make ajax-driven forms easily. It uses OOP aproach,
- *       which means developers has to write less code!
- * @author Maher Salam <admin@namodg.com>
+ * NamodgApp - A beautiful ajax form
+ * ========================
+ * 
+ * NamodgApp is customizable, configurable, ajax application which can be used
+ * to recieve data from users. It's form is generated using Namodg which allows
+ * developers to eaisly extend and change the functionality of NamodgApp.
+ * 
+ * @author Maher Sallam <admin@namodg.com>
  * @link http://namodg.com
- * @copyright Copyright (c) 2010-2011, Maher Salam
+ * @copyright Copyright (c) 2010-2011, Maher Sallam
  *
  * Dual licensed under the MIT and GPL licenses:
  *   @license http://www.opensource.org/licenses/mit-license.php
@@ -19,7 +22,7 @@
 /***************************************************************/
 
 // أيميل مستلم الرسائل - في أغلب الأحيان هو أيميل صاحب الموقع
-$config['app']['email'] = 'recieve@localhost.com';
+$config['app']['email'] = 'maher@localhost';
 
 // المفتاح الخاص بسكربتك - الرجاء التوجه للصفحة التالية للحصول على مفتاحك
 // http://namodg.com/keys

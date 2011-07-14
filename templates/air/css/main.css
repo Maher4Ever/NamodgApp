@@ -1,489 +1,493 @@
 /**
- * Namodg - Ajax Forms Generator
- *
- * @desc Namodg allows developers to make ajax-driven forms easily. It uses OOP aproach,
- *       which means developers has to write less code!
- * @author Maher Salam
+ * NamodgApp - A beautiful ajax form
+ * ========================
+ * 
+ * NamodgApp is customizable, configurable, ajax application which can be used
+ * to recieve data from users. It's form is generated using Namodg which allows
+ * developers to eaisly extend and change the functionality of NamodgApp.
+ * 
+ * @author Maher Sallam <admin@namodg.com>
  * @link http://namodg.com
- * @copyright Copyright (c) 2010-2011, Maher Salam
+ * @copyright Copyright (c) 2010-2011, Maher Sallam
  *
  * Dual licensed under the MIT and GPL licenses:
  *   @license http://www.opensource.org/licenses/mit-license.php
  *   @license http://www.gnu.org/licenses/gpl.html
+*/
 
- Reset
+/* Reset
 =========================================================== */
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td
 {
-	border:0;
-	font-size:100%;
-	margin:0;
-	outline:0;
-	padding:0;
-	vertical-align:baseline
+    border:0;
+    font-size:100%;
+    margin:0;
+    outline:0;
+    padding:0;
+    vertical-align:baseline
 }
 
 /* General
 =========================================================== */
 body
 {
-	background:url(../images/background.jpg) top left #e2e7e8;
-	direction:rtl;
-	font-family:"Times New Roman", Times, serif;
-	padding:80px 0 60px
+    background:url(../images/background.jpg) top left #e2e7e8;
+    direction:rtl;
+    font-family:"Times New Roman", Times, serif;
+    padding:80px 0 60px
 }
 
 /* Main Wrapper
 =========================================================== */
 #wrapper
 {
-	-moz-border-radius:5px;
-	-moz-box-shadow:0 2px 1px rgba(0, 0, 0, 0.1);
-	-webkit-border-radius:5px;
-	-webkit-box-shadow:0 2px 1px rgba(0, 0, 0, 0.1);
-	background:#fff;
-	border:1px solid #c0d3da;
-	border-radius:5px;
-	box-shadow:0 2px 1px rgba(0, 0, 0, 0.1);
-	margin:auto;
-	width:460px
+    -moz-border-radius:5px;
+    -moz-box-shadow:0 2px 1px rgba(0, 0, 0, 0.1);
+    -webkit-border-radius:5px;
+    -webkit-box-shadow:0 2px 1px rgba(0, 0, 0, 0.1);
+    background:#fff;
+    border:1px solid #c0d3da;
+    border-radius:5px;
+    box-shadow:0 2px 1px rgba(0, 0, 0, 0.1);
+    margin:auto;
+    width:460px
 }
 
 #content .shade,.shade input,.shade select,.namodg-select .options,.shade textarea,#content .ajax-error
 {
-	-moz-border-radius:3px;
-	-webkit-border-radius:3px;
-	border-radius:3px
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+    border-radius:3px
 }
 
 .tip
 {
-	color:#ababab;
-	float:left;
-	font-size:12px;
-	margin-top:3px
+    color:#ababab;
+    float:left;
+    font-size:12px;
+    margin-top:3px
 }
 
 .button
 {
-	line-height:35px;
-	text-align:center;
-	text-decoration:none
+    line-height:35px;
+    text-align:center;
+    text-decoration:none
 }
 
 /* Header
 =========================================================== */
 #header
 {
-	background:url(../images/header/bg.png) repeat-x top left;
-	color:#fff;
-	height:70px;
-	line-height:70px;
-	margin:10px 0;
-	position:relative;
-	text-align:center;
-	width:100%
+    background:url(../images/header/bg.png) repeat-x top left;
+    color:#fff;
+    height:70px;
+    line-height:70px;
+    margin:10px 0;
+    position:relative;
+    text-align:center;
+    width:100%
 }
 
 #header-left
 {
-	background:url(../images/header/left-corner.png) no-repeat;
-	height:75px;
-	left:-7px;
-	position:absolute;
-	top:0;
-	width:7px
+    background:url(../images/header/left-corner.png) no-repeat;
+    height:75px;
+    left:-7px;
+    position:absolute;
+    top:0;
+    width:7px
 }
 
 #header-right
 {
-	background:url(../images/header/right-corner.png) no-repeat;
-	height:75px;
-	position:absolute;
-	right:-7px;
-	top:0;
-	width:7px
+    background:url(../images/header/right-corner.png) no-repeat;
+    height:75px;
+    position:absolute;
+    right:-7px;
+    top:0;
+    width:7px
 }
 
 #header h1
 {
-	font-size:28px;
-	text-shadow:0 -1px 0 rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 255, 255, 0.5)
+    font-size:28px;
+    text-shadow:0 -1px 0 rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 255, 255, 0.5)
 }
 
 #header h1 img
 {
-	margin-left:15px
+    margin-left:15px
 }
 
 /* Content
 =========================================================== */
 #content
 {
-	border-bottom:1px solid #C0D3DA;
-	padding:20px 30px 10px;
-	position:relative
+    border-bottom:1px solid #C0D3DA;
+    padding:20px 30px 10px;
+    position:relative
 }
 
 #content label
 {
-	color:#6f6f6f;
-	cursor:pointer;
-	font-size:16px;
-	font-weight:700
+    color:#6f6f6f;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:700
 }
 
 #content .shade
 {
-	background:#f7f9fa;
-	font-size:14px;
-	margin:10px 0 20px;
-	padding:5px
+    background:#f7f9fa;
+    font-size:14px;
+    margin:10px 0 20px;
+    padding:5px
 }
 
 #content .alt,#content .captcha-question
 {
-	background:url(../images/form/alt-bg.png) no-repeat;
-	float:right;
-	height:38px;
-	line-height:39px;
-	text-align:center;
-	width:100px
+    background:url(../images/form/alt-bg.png) no-repeat;
+    float:right;
+    height:38px;
+    line-height:39px;
+    text-align:center;
+    width:100px
 }
 
 #content .captcha-question
 {
-	cursor:help
+    cursor:help
 }
 
 .shade input,.shade select,.namodg-select .selected,.namodg-select .options a,.shade textarea
 {
-	-moz-box-shadow:-1px 1px 5px rgba(0, 0, 0, 0.1) inset;
-	-webkit-box-shadow:-1px 1px 5px rgba(0, 0, 0, 0.1) inset;
-	background:#fff;
-	border:1px solid #D2D9DC;
-	box-shadow:-1px 1px 5px rgba(0, 0, 0, 0.1) inset;
-	color:#859399;
-	font-family:"Times New Roman", Times, serif;
-	font-size:14px;
-	outline:0 none;
-	padding:10px;
-	width:368px
+    -moz-box-shadow:-1px 1px 5px rgba(0, 0, 0, 0.1) inset;
+    -webkit-box-shadow:-1px 1px 5px rgba(0, 0, 0, 0.1) inset;
+    background:#fff;
+    border:1px solid #D2D9DC;
+    box-shadow:-1px 1px 5px rgba(0, 0, 0, 0.1) inset;
+    color:#859399;
+    font-family:"Times New Roman", Times, serif;
+    font-size:14px;
+    outline:0 none;
+    padding:10px;
+    width:368px
 }
 
 .shade input:focus,.shade textarea:focus
 {
-	border-color:#b7d4ea;
-	color:#000
+    border-color:#b7d4ea;
+    color:#000
 }
 
 #content div.active
 {
-	background:#ecf5fb
+    background:#ecf5fb
 }
 
 .shade input,.namodg-select .selected,.namodg-select .options a
 {
-	height:16px;
-	line-height:16px
+    height:16px;
+    line-height:16px
 }
 
 .shade textarea
 {
-	height:100px;
-	max-width:368px;
-	overflow:auto;
-	padding-top:10px
+    height:100px;
+    max-width:368px;
+    overflow:auto;
+    padding-top:10px
 }
 
 #email
 {
-	direction:ltr;
-	text-align:right
+    direction:ltr;
+    text-align:right
 }
 
 .shade .captcha,.shade select
 {
-	-moz-border-radius-bottomright:0;
-	-moz-border-radius-topright:0;
-	-webkit-border-bottom-right-radius:0;
-	-webkit-border-top-right-radius:0;
-	border-bottom-right-radius:0;
-	border-right:0 none;
-	border-top-right-radius:0;
-	width:269px
+    -moz-border-radius-bottomright:0;
+    -moz-border-radius-topright:0;
+    -webkit-border-bottom-right-radius:0;
+    -webkit-border-top-right-radius:0;
+    border-bottom-right-radius:0;
+    border-right:0 none;
+    border-top-right-radius:0;
+    width:269px
 }
 
 .shade select
 {
-	height:38px;
-	line-height:38px;
-	padding:8px;
-	width:290px
+    height:38px;
+    line-height:38px;
+    padding:8px;
+    width:290px
 }
 
 #content button,.button
 {
-	background:url(../images/form/button-bg.png) no-repeat left top;
-	border:0 none;
-	bottom:-58px;
-	color:#fff;
-	cursor:pointer;
-	font-family:"Times New Roman", Times, serif;
-	font-size:16px;
-	font-weight:700;
-	height:35px;
-	left:30px;
-	outline:0 none;
-	position:absolute;
-	text-shadow:0 -1px 0 rgba(0, 0, 0, 0.2);
-	width:133px
+    background:url(../images/form/button-bg.png) no-repeat left top;
+    border:0 none;
+    bottom:-58px;
+    color:#fff;
+    cursor:pointer;
+    font-family:"Times New Roman", Times, serif;
+    font-size:16px;
+    font-weight:700;
+    height:35px;
+    left:30px;
+    outline:0 none;
+    position:absolute;
+    text-shadow:0 -1px 0 rgba(0, 0, 0, 0.2);
+    width:133px
 }
 
 #content button:hover,#content button:focus,.button:hover,.button:focus
 {
-	background-position:left -35px
+    background-position:left -35px
 }
 
 #content button:active,.button:active
 {
-	background-position:left -71px;
-	text-shadow:1px 0 3px #6697a0
+    background-position:left -71px;
+    text-shadow:1px 0 3px #6697a0
 }
 
 /* Namodg Select
 =========================================================== */
 .namodg-select
 {
-	float:right;
-	position:relative;
-	zoom:1px
+    float:right;
+    position:relative;
+    zoom:1px
 }
 
 .namodg-select .selected
 {
-	border-left:0 none;
-	border-right:0 none;
-	cursor:pointer;
-	float:right;
-	width:236px
+    border-left:0 none;
+    border-right:0 none;
+    cursor:pointer;
+    float:right;
+    width:236px
 }
 
 .active .namodg-select .selected
 {
-	border-color:#bcd7ec
+    border-color:#bcd7ec
 }
 
 .namodg-select .toggler
 {
-	display:block;
-	float:right;
-	text-decoration:none
+    display:block;
+    float:right;
+    text-decoration:none
 }
 
 .namodg-select .toggle-button
 {
-	background:url(../images/form/select-arrow.png) no-repeat left top;
-	cursor:pointer;
-	display:block;
-	float:right;
-	height:38px;
-	width:34px
+    background:url(../images/form/select-arrow.png) no-repeat left top;
+    cursor:pointer;
+    display:block;
+    float:right;
+    height:38px;
+    width:34px
 }
 
 .namodg-select .toggler-active .toggle-button
 {
-	background-position:left bottom
+    background-position:left bottom
 }
 
 .namodg-select .options
 {
-	-moz-border-radius-topleft:0;
-	-moz-border-radius-topright:0;
-	-webkit-border-top-left-radius:0;
-	-webkit-border-top-right-radius:0;
-	background:#ecf5fb;
-	border-top-left-radius:0;
-	border-top-right-radius:0;
-	display:none;
-	padding:0 5px 5px;
-	position:absolute;
-	width:258px;
-        z-index: 99999;
+    -moz-border-radius-topleft:0;
+    -moz-border-radius-topright:0;
+    -webkit-border-top-left-radius:0;
+    -webkit-border-top-right-radius:0;
+    background:#ecf5fb;
+    border-top-left-radius:0;
+    border-top-right-radius:0;
+    display:none;
+    padding:0 5px 5px;
+    position:absolute;
+    width:258px;
+    z-index: 99999;
 }
 
 .namodg-select .options li
 {
-	list-style:none
+    list-style:none
 }
 
 .namodg-select .options a
 {
-	background:#f4f8f9;
-	border-color:#bcd7ec;
-	border-top:0 none;
-	cursor:pointer;
-	display:block;
-	text-decoration:none;
-	width:236px
+    background:#f4f8f9;
+    border-color:#bcd7ec;
+    border-top:0 none;
+    cursor:pointer;
+    display:block;
+    text-decoration:none;
+    width:236px
 }
 
 .namodg-select .options a:hover,.namodg-select .options a:focus
 {
-	background:#fff;
-	color:#6F6F6F
+    background:#fff;
+    color:#6F6F6F
 }
 
 /* Ajax Errors
 =========================================================== */
 #content div.error
 {
-	background:#fdf2f2
+    background:#fdf2f2
 }
 
 #content .error input,#content .error select,.error .namodg-select .selected,#content .error textarea
 {
-	border-color:#eea2a2
+    border-color:#eea2a2
 }
 
 #content .ajax-error
 {
-	background:#FFFCED;
-	border:1px solid #FFE485;
-	color:#777;
-	font-size:14px;
-        padding:10px;
-	margin-bottom:20px;
-	text-align:right
+    background:#FFFCED;
+    border:1px solid #FFE485;
+    color:#777;
+    font-size:14px;
+    padding:10px;
+    margin-bottom:20px;
+    text-align:right
 }
 
 /* No-Ajax Validation Errors
 =========================================================== */
 #errors
 {
-	border-bottom:1px solid #C0D3DA;
-	padding:30px;
-	position:relative
+    border-bottom:1px solid #C0D3DA;
+    padding:30px;
+    position:relative
 }
 
 #errors h1
 {
-	border-bottom:1px solid #FC9797;
-	color:#555;
-	font-size:18px;
-	font-weight:400;
-	margin-bottom:20px;
-	padding-bottom:10px
+    border-bottom:1px solid #FC9797;
+    color:#555;
+    font-size:18px;
+    font-weight:400;
+    margin-bottom:20px;
+    padding-bottom:10px
 }
 
 #errors ul
 {
-	list-style:circle outside;
-	padding-right:20px
+    list-style:circle outside;
+    padding-right:20px
 }
 
 #errors li
 {
-	color:#777;
-	font-size:16px;
-	line-height:25px
+    color:#777;
+    font-size:16px;
+    line-height:25px
 }
 
 /* Loading
 =========================================================== */
 #content .loading
 {
-	background:url(../images/loading.gif) no-repeat center center;
-	display:none;
-	height:100px;
-	margin:10px 0 20px;
-	overflow:hidden;
-	text-indent:-9999px
+    background:url(../images/loading.gif) no-repeat center center;
+    display:none;
+    height:100px;
+    margin:10px 0 20px;
+    overflow:hidden;
+    text-indent:-9999px
 }
 
 /* Response
 =========================================================== */
 #response
 {
-	background:url(../images/response/bg.png) no-repeat 25px top #fff;
-	min-height:120px;
-	padding:25px 0
+    background:url(../images/response/bg.png) no-repeat 25px top #fff;
+    min-height:120px;
+    padding:25px 0
 }
 
 #response .success-icon
 {
-	left:20px;
-	position:absolute;
-	top:45px
+    left:20px;
+    position:absolute;
+    top:45px
 }
 
 #response .fail-icon
 {
-	left:18px;
-	position:absolute;
-	top:45px
+    left:18px;
+    position:absolute;
+    top:45px
 }
 
 #response h2
 {
-	color:#555;
-	font-size:24px;
-	font-weight:400;
-	margin:0 0 15px 120px
+    color:#555;
+    font-size:24px;
+    font-weight:400;
+    margin:0 0 15px 120px
 }
 
 #response p
 {
-	color:#888;
-	font-size:14px;
-	line-height:20px;
-	margin-left:120px
+    color:#888;
+    font-size:14px;
+    line-height:20px;
+    margin-left:120px
 }
 
 #response p a
 {
-	color:#7190A0;
-	text-decoration:none
+    color:#7190A0;
+    text-decoration:none
 }
 
 #response p a:hover
 {
-	color:#82b4cd
+    color:#82b4cd
 }
 
 /* Footer
 =========================================================== */
 #footer
 {
-	-moz-border-radius-bottomleft:5px;
-	-moz-border-radius-bottomright:5px;
-	-webkit-border-bottom-left-radius:5px;
-	-webkit-border-bottom-right-radius:5px;
-	background:#F0F6F7;
-	border:1px solid #FFF;
-	border-bottom-left-radius:5px;
-	border-bottom-right-radius:5px;
-	height:75px
+    -moz-border-radius-bottomleft:5px;
+    -moz-border-radius-bottomright:5px;
+    -webkit-border-bottom-left-radius:5px;
+    -webkit-border-bottom-right-radius:5px;
+    background:#F0F6F7;
+    border:1px solid #FFF;
+    border-bottom-left-radius:5px;
+    border-bottom-right-radius:5px;
+    height:75px
 }
 
 /* Rights
 =========================================================== */
 #rights
 {
-	color:#afc1c9;
-	direction:ltr;
-	font-size:10px;
-	margin-top:20px;
-	text-align:center
+    color:#afc1c9;
+    direction:ltr;
+    font-size:10px;
+    margin-top:20px;
+    text-align:center
 }
 
 #rights a
 {
-	color:#afc1c9;
-	text-decoration:none
+    color:#afc1c9;
+    text-decoration:none
 }
 
 #coolworlds-logo
 {
-	vertical-align:bottom
+    vertical-align:bottom
 }

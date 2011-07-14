@@ -1,13 +1,16 @@
 <?php
 
 /**
- * Namodg - Ajax Forms Generator
- *
- * @desc Namodg allows developers to make ajax-driven forms easily. It uses OOP aproach,
- *       which means developers has to write less code!
- * @author Maher Salam <admin@namodg.com>
+ * NamodgApp - A beautiful ajax form
+ * ========================
+ * 
+ * NamodgApp is customizable, configurable, ajax application which can be used
+ * to recieve data from users. It's form is generated using Namodg which allows
+ * developers to eaisly extend and change the functionality of NamodgApp.
+ * 
+ * @author Maher Sallam <admin@namodg.com>
  * @link http://namodg.com
- * @copyright Copyright (c) 2010-2011, Maher Salam
+ * @copyright Copyright (c) 2010-2011, Maher Sallam
  *
  * Dual licensed under the MIT and GPL licenses:
  *   @license http://www.opensource.org/licenses/mit-license.php
@@ -45,7 +48,7 @@ $phrase['response']['sending_failed'] = 'خطأ عند الإرسال !';
 $phrase['response']['fail_message_headline'] = 'أوبس! عذراً منك زائرنا العزيز';
 $phrase['response']['fail_message_body'] = 'حالف ساعي بريدنا سوء الحظ عند محاولة إيصال رسالتك. الرجاء منك تركه ينال قسط من الراحة و من ثم حاول من جديد. يمكنك في هذه الأثناء التوجه <a href="/">لرئيسيتنا</a> و إكتشاف أقسام الموقع الأخرى.';
 
-//Errors
+// Errors
 $phrase['errors']['php_version_not_supported'] = 'نسخة PHP المستخدمة غير مدعومة. الرجاء الترقية إلى نسخة ٥.٢.٠ أو أكثر ليعمل نموذج.';
 $phrase['errors']['config_array_not_valid'] = 'إعدادات نموذج المدخلة غير صحيحة. الرجاء إستخدام ملف الإعدادات الإفتراضي لحل هذه المشكلة.';
 $phrase['errors']['language_code_length_not_valid'] = 'خيار اللغة يجب أن يكون عبارة عن حرفين يمثلان إختصار اللغة، مثلاً ar للعربية.';
@@ -59,7 +62,7 @@ $phrase['errors']['reply_to_field_name_not_valid'] = 'أسم حقل "إيميل 
 $phrase['errors']['mail_function_disabled'] = 'دالة ()mail غير فعالة في هذا الخادم، الرجاء تفعيل هذه الدالة لنتمكن من إرسال رسائلك.';
 $phrase['errors']['cache_not_writable'] = 'مجلد cache ليس قابل للكتابة. الرجاء تغيير تصريحات الملف و السماح بالكتابة فيه.';
 
-//Misc
+// Misc
 $phrase['misc']['fatal_errors_title'] = 'عذراً، الرجاء تصحيح الأخطاء التالية ليعمل "نموذج" :';
 $phrase['misc']['validation_errors_title'] = 'عذراً، الرجاء العودة للصفحة السابقة لتصحيح البيانات التالية:';
 $phrase['misc']['selected'] = 'المحدد';

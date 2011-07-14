@@ -1,21 +1,25 @@
 /**
- * Namodg - Ajax Forms Generator
- *
- * @desc Namodg allows developers to make ajax-driven forms easily. It uses OOP aproach,
- *       which means developers has to write less code!
- * @author Maher Salam
+ * NamodgApp - A beautiful ajax form
+ * ========================
+ * 
+ * NamodgApp is customizable, configurable, ajax application which can be used
+ * to recieve data from users. It's form is generated using Namodg which allows
+ * developers to eaisly extend and change the functionality of NamodgApp.
+ * 
+ * @author Maher Sallam <admin@namodg.com>
  * @link http://namodg.com
- * @copyright Copyright (c) 2010-2011, Maher Salam
+ * @copyright Copyright (c) 2010-2011, Maher Sallam
  *
  * Dual licensed under the MIT and GPL licenses:
  *   @license http://www.opensource.org/licenses/mit-license.php
  *   @license http://www.gnu.org/licenses/gpl.html
+*/
 
 /* General
 =========================================================== */
 body
 {
-	direction:ltr
+    direction:ltr
 }
 
 
@@ -23,37 +27,37 @@ body
 =========================================================== */
 .tip
 {
-	float:right
+    float:right
 }
 
 /* Header
 =========================================================== */
 #header h1 img
 {
-        margin-left: 0;
-	margin-right:15px
+    margin-left: 0;
+    margin-right:15px
 }
 
 /* Content
 =========================================================== */
 #content .alt,#content .captcha-question
 {
-	float:left
+    float:left
 }
 
 .shade .captcha,.shade select
 {
-	-moz-border-radius:3px;
-	-webkit-border-radius:3px;
-	border-radius:3px;
-        border:1px solid #D2D9DC;
-	-moz-border-radius-bottomleft:0;
-	-moz-border-radius-topleft:0;
-	-webkit-border-bottom-left-radius:0;
-	-webkit-border-top-left-radius:0;
-	border-bottom-left-radius:0;
-	border-left:0 none;
-	border-top-left-radius:0
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+    border-radius:3px;
+    border:1px solid #D2D9DC;
+    -moz-border-radius-bottomleft:0;
+    -moz-border-radius-topleft:0;
+    -webkit-border-bottom-left-radius:0;
+    -webkit-border-top-left-radius:0;
+    border-bottom-left-radius:0;
+    border-left:0 none;
+    border-top-left-radius:0
 }
 
 #content .alt,#content .captcha-question
@@ -62,26 +66,26 @@ body
 }
 
 #email {
-        text-align:left;
+    text-align:left;
 }
 
 #content button,.button
 {
-    	right:30px;
-        left: auto;
-        font-size: 14px;
+    right:30px;
+    left: auto;
+    font-size: 14px;
 }
 
 /* Namodg Select
 =========================================================== */
 .namodg-select
 {
-        float:left
+    float:left
 }
 
 .namodg-select .selected
 {
-        float:left
+    float:left
 }
 
 .namodg-select .toggler
@@ -97,48 +101,48 @@ body
 
 .namodg-select .toggler-active .toggle-button
 {
-	background-position:right bottom
+    background-position:right bottom
 }
 
 /* Ajax Errors
 =========================================================== */
 #content .ajax-error
 {
-        text-align:left;
+    text-align:left;
 }
 
 /* No-Ajax Validation Errors
 =========================================================== */
 #errors ul
 {
-	padding-right:0;
-        padding-left:20px;
+    padding-right:0;
+    padding-left:20px;
 }
 
 /* Response
 =========================================================== */
 #response
 {
-	background-image:url(../images/response/bg-ltr.png);
-        background-position: 300px top;
+    background-image:url(../images/response/bg-ltr.png);
+    background-position: 300px top;
 }
 
 #response .success-icon
 {
-	right:20px;
-        left:auto;
+    right:20px;
+    left:auto;
 }
 
 #response .fail-icon
 {
-	right:18px;
-        left:auto;       
+    right:18px;
+    left:auto;       
 }
 
 #response h2
 {
-    	margin:0 120px 15px 0;
-        font-size: 22px;
+    margin:0 120px 15px 0;
+    font-size: 22px;
 }
 
 #response p

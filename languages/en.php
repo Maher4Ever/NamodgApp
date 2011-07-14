@@ -1,13 +1,16 @@
 <?php
 
 /**
- * Namodg - Ajax Forms Generator
- *
- * @desc Namodg allows developers to make ajax-driven forms easily. It uses OOP aproach,
- *       which means developers has to write less code!
- * @author Maher Salam <admin@namodg.com>
+ * NamodgApp - A beautiful ajax form
+ * ========================
+ * 
+ * NamodgApp is customizable, configurable, ajax application which can be used
+ * to recieve data from users. It's form is generated using Namodg which allows
+ * developers to eaisly extend and change the functionality of NamodgApp.
+ * 
+ * @author Maher Sallam <admin@namodg.com>
  * @link http://namodg.com
- * @copyright Copyright (c) 2010-2011, Maher Salam
+ * @copyright Copyright (c) 2010-2011, Maher Sallam
  *
  * Dual licensed under the MIT and GPL licenses:
  *   @license http://www.opensource.org/licenses/mit-license.php
@@ -45,7 +48,7 @@ $phrase['response']['sending_failed'] = 'Your message couldn\'t be devliverd';
 $phrase['response']['fail_message_headline'] = 'Oops, Something went wrong!';
 $phrase['response']['fail_message_body'] = 'Our mailman has had bad luck while trying to deliver your message. Please let him rest for a while and then try again. In the meantime you could check out our <a href="/">homepage</a> and explore the rest of our website.';
 
-//Errors
+// Errors
 $phrase['errors']['php_version_not_supported'] = 'The used PHP version is not supported. Please upgrade to version 5.2.0 or higher.';
 $phrase['errors']['config_array_not_valid'] = 'The enterd configurations are not valid. Please use the default configuration file to solve this problem.';
 $phrase['errors']['language_code_length_not_valid'] = 'The language configuration should be 2 charecters long. For example: "en" for English.';
@@ -59,7 +62,7 @@ $phrase['errors']['reply_to_field_name_not_valid'] =  'The entered "reply_to_fie
 $phrase['errors']['mail_function_disabled'] = 'The "mail()" function is disabled in this server. This function is needed for sending the emails.';
 $phrase['errors']['cache_not_writable'] = 'The "cache" folder is no writable. Please change this folder\'s permissions and to 777.';
 
-//Misc
+// Misc
 $phrase['misc']['fatal_errors_title'] = 'Sorry, please correct the following errors:';
 $phrase['misc']['validation_errors_title'] = 'Sorry, please go back and correct the following errors:';
 $phrase['misc']['selected'] = 'Selected';

@@ -23,18 +23,18 @@
     <script type="text/javascript">
         (function(window, undefined){
             
-            if ( window.Namodg === undefined ) {
-                window.Namodg = {};
+            if ( window.NamodgApp === undefined ) {
+                window.NamodgApp = {};
             }
             
-            window.Namodg.lang ={
+            window.NamodgApp.lang ={
                 phrases: <?php echo $js_phrases;?>,
                 ltr: <?php echo $ltr? 'true':'false';?>
 
             };
         })(this);
     </script>
-    <script type="text/javascript" src="templates/air/includes/../js/namodg.main.js"></script>
+    <script type="text/javascript" src="templates/air/includes/../js/namodgApp.js"></script>
 </body>
 
 </html>

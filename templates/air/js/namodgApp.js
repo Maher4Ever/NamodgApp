@@ -1,11 +1,14 @@
 /**
- * Namodg - Ajax Forms Generator
- *
- * @desc Namodg allows developers to make ajax-driven forms easily. It uses OOP aproach,
- *       which means developers has to write less code!
- * @author Maher Salam <admin@namodg.com>
+ * NamodgApp - A beautiful ajax form
+ * ========================
+ * 
+ * NamodgApp is customizable, configurable, ajax application which can be used
+ * to recieve data from users. It's form is generated using Namodg which allows
+ * developers to eaisly extend and change the functionality of NamodgApp.
+ * 
+ * @author Maher Sallam <admin@namodg.com>
  * @link http://namodg.com
- * @copyright Copyright (c) 2010-2011, Maher Salam
+ * @copyright Copyright (c) 2010-2011, Maher Sallam
  *
  * Dual licensed under the MIT and GPL licenses:
  *   @license http://www.opensource.org/licenses/mit-license.php
@@ -20,7 +23,7 @@
     var document = window.document,
         location = window.location;
 
-    var Namodg = {
+    var NamodgApp = {
 
         init : function () {
 
@@ -256,7 +259,7 @@
             // Change the button link to a simulation of a browser back functionality, to enable the animation
             response.find('.button').attr('href', 'javascript:history.back()');
 
-            // Add the response var to Namodg object for further use ( with hash change )
+            // Add the response var to NamodgApp object for further use ( with hash change )
             self.response = response;
 
             // Show the transition
@@ -276,7 +279,7 @@
 
                 });
 
-                // Add the current page title to Namodg object to be able to revert to it later
+                // Add the current page title to NamodgApp object to be able to revert to it later
                 self.documentTitle = document.title;
 
                 // Change the title of the page and the hash based on the class of the response
@@ -482,14 +485,14 @@
 
     };
 
-    // Make Namodg object global
-    window.Namodg = $.extend(window.Namodg, Namodg);
+    // Add this NamodgApp to the global one
+    $.extend(window.NamodgApp, NamodgApp);
 
 }(this, jQuery));
 
 $(function() {
 
     // Run the script!
-    Namodg.init();
+    NamodgApp.init();
 
 })
