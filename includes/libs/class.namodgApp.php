@@ -289,13 +289,7 @@ class NamodgApp {
         
         // Add NamodgApp header
         $message->getHeaders()->addTextHeader('X-Generator', 'NamodgApp v1.4');
-        
-		echo $message->getHeaders()->toString();
-		
-		$transport = Swift_MailTransport::newInstance();  
-		$mailer = Swift_Mailer::newInstance($transport);
-		$this->_emailSent = @$mailer->send($message); 
-		
+        	
         try { // Try sending using sendmail
             $transport = Swift_SendmailTransport::newInstance();
             $mailer = Swift_Mailer::newInstance($transport);
