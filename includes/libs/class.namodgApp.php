@@ -116,11 +116,11 @@ class NamodgApp {
                 self::$_key = $config['app']['key'];
             }
             
-            if ( filter_var($this->_getConfig('to_email'), FILTER_VALIDATE_EMAIL) === true ) {
+            if ( filter_var($this->_getConfig('to_email'), FILTER_VALIDATE_EMAIL) === false ) {
                  $this->_addError('to_email_not_valid');
             }
             
-            if ( filter_var($this->_getConfig('from_email'), FILTER_VALIDATE_EMAIL) === true ) {
+            if ( filter_var($this->_getConfig('from_email'), FILTER_VALIDATE_EMAIL) === false ) {
                  $this->_addError('from_email_not_valid');
             }
             
