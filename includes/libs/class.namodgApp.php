@@ -116,11 +116,11 @@ class NamodgApp {
                 self::$_key = $config['app']['key'];
             }
             
-            if ( filter_var($this->_getConfig('to_email'), FILTER_VALIDATE_EMAIL) === false ) {
+            if ( filter_var($this->_getConfig('to_email'), FILTER_VALIDATE_EMAIL) === true ) {
                  $this->_addError('to_email_not_valid');
             }
             
-            if ( filter_var($this->_getConfig('from_email'), FILTER_VALIDATE_EMAIL) === false ) {
+            if ( filter_var($this->_getConfig('from_email'), FILTER_VALIDATE_EMAIL) === true ) {
                  $this->_addError('from_email_not_valid');
             }
             
@@ -361,10 +361,14 @@ class NamodgApp {
             if ( $field->getOption('send') == false) {
                 continue;
             }
-
+                        
             $id = ( $field->getOption('label') ) ? $field->getOption('label') : $field->getName();
             $id = trim(str_replace(':', '', $id));
             $value = trim($field->getCleanedValue());
+            
+            if ( !$field->getOption('required') && empty($value) ) {
+                continue;
+            }
             
             if ( $type != 'txt' ) {
                 if ( $field->getType() == 'textarea' ) {
