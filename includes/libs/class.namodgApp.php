@@ -116,8 +116,12 @@ class NamodgApp {
                 self::$_key = $config['app']['key'];
             }
             
-            if ( ! filter_var($this->_getConfig('email'), FILTER_VALIDATE_EMAIL) ) {
-                 $this->_addError('receipt_email_not_valid');
+            if ( filter_var($this->_getConfig('to_email'), FILTER_VALIDATE_EMAIL) === false ) {
+                 $this->_addError('to_email_not_valid');
+            }
+            
+            if ( filter_var($this->_getConfig('from_email'), FILTER_VALIDATE_EMAIL) === false ) {
+                 $this->_addError('from_email_not_valid');
             }
             
         } catch ( NamodgAppException $e ) { // Fatal config error         
@@ -274,9 +278,9 @@ class NamodgApp {
                             $this->_language()->getPhrase('mailer', 'default_subject') 
                         )
 
-            ->setFrom(array($this->_getConfig('email') => $this->_language()->getPhrase('mailer', 'sender_name')))
+            ->setFrom(array($this->_getConfig('from_email') => $this->_language()->getPhrase('mailer', 'sender_name')))
 
-            ->setTo($this->_getConfig('email'))
+            ->setTo($this->_getConfig('to_email'))
 
             ->setBody($this->_generateEmail(), 'text/html')
 
@@ -300,11 +304,11 @@ class NamodgApp {
             $this->_emailSent = @$mailer->send($message);  
         }
 		
-		if ( ! $this->_emailSent ) {
-			@error_log('NamodgApp: mail() function is activated but unable to send emails. Please consult your server admins about this problem', 0);
-		} else {
-			$this->_emailSent = (bool)$this->_emailSent;
-		}
+        if ( ! $this->_emailSent ) {
+                @error_log('NamodgApp: mail() function is activated but unable to send emails. Please consult your server admins about this problem', 0);
+        } else {
+                $this->_emailSent = (bool)$this->_emailSent;
+        }
         
     }
     
@@ -491,7 +495,8 @@ class NamodgApp {
         
         $defaults = array(
             'debug' => FALSE,
-            'email' => NULL,
+            'to_email' => NULL,
+            'from_email' => NULL,
             'template' => 'air',
             'language' => 'ar',
             'page_title' => 'Namodg',
