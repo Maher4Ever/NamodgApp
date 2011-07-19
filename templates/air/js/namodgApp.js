@@ -184,11 +184,18 @@
                     data: self.form.serialize()
                 })
                 .done(function(response) {
-                    self.handleAjaxSuccess(response);
+                    
+                    // Convert the reponse to a jQuery object
+                    var $data = $(response);
+                    
+                    // Check if the ajax reponse has the actual response
+                    if ( $data.find('#response').length ) {
+                        self.handleAjaxSuccess($data);
+                    } else {
+                        self.handleAjaxErrors();
+                    }
                 })
-                .fail(function() {
-                    self.handleAjaxErrors();
-                });
+                .fail(self.handleAjaxErrors);
 
         },
 
@@ -233,13 +240,10 @@
 
         },
 
-        handleAjaxSuccess : function (data) {
+        handleAjaxSuccess : function ($data) {
             
             // Get the name of the object and cache it
             var self = this,
-
-            // Convert the data to jQuery object
-                $data = $(data),
 
             // Get the page title
                 title = $data.filter('title').text(),
