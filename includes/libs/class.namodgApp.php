@@ -273,8 +273,8 @@ class NamodgApp {
         $message = Swift_Message::newInstance();
         
         $message
-            ->setSubject( $this->_getConfig('email_title') ? 
-                            $this->_getConfig('email_title') : 
+            ->setSubject( $this->_getConfig('message_title') ? 
+                            $this->_getConfig('message_title') : 
                             $this->_language()->getPhrase('mailer', 'default_subject') 
                         )
 
