@@ -44,7 +44,7 @@
                 check : function(value) {
 
                     if(value)
-                        return testPattern(value,"[0-9]+");
+                        return testPattern(value,"[0-9\u0660-\u0669]+");
                     return true;
 
                 },
