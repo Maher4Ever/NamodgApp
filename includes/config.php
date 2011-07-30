@@ -28,7 +28,7 @@
  * بريد إلكتروني أمثال (Gmail, Hotmail, Yahoo..). كما يمكنك إستخدام إيميل على نطاق موقعك
  * (إنظر لخيار إيميل نموذج)
  */
-$config['app']['to_email'] = 'maher@localhost';
+$config['app']['to_email'] = '';
 
 /* 
  * ايميل نموذج
@@ -40,7 +40,7 @@ $config['app']['to_email'] = 'maher@localhost';
  * ملاحظة: إعداد هذا الخيار إلى إيميل على نفس نطاق موقعك سيحمي الرسائل التي تصلك من نموذج
  * من فرزها كرسالة مزعجة (spam) بنسبة كبيرة جداً.
  */
-$config['app']['from_email'] = 'namodg@localhost';
+$config['app']['from_email'] = '';
 
 /* 
  * مفتاح نموذج
@@ -50,7 +50,7 @@ $config['app']['from_email'] = 'namodg@localhost';
  * 
  * للحصول على مفتاحك الرجاء التوجه إلى: http://namodg.com/keys
  */
-$config['app']['key'] = 'fsdf#RFsdfer3245';
+$config['app']['key'] = '';
 
 
 /****************************************************************
