@@ -307,7 +307,7 @@ class NamodgApp {
         if ( ! $this->_emailSent ) {
                 @error_log('NamodgApp: mail() function is activated but unable to send emails. Please consult your server admins about this problem', 0);
         } else {
-                $this->_emailSent = (bool)$this->_emailSent;
+                $this->_emailSent = true;
         }
         
     }
