@@ -297,7 +297,7 @@ class NamodgApp {
         try { // Try sending using sendmail
             $transport = Swift_SendmailTransport::newInstance();
             $mailer = Swift_Mailer::newInstance($transport);
-            $this->_emailSent = $mailer->send($message);
+            $this->_emailSent = @$mailer->send($message);
         } catch(Swift_TransportException $e) { // Can't use sendmail, try mail()
             $transport = Swift_MailTransport::newInstance();  
             $mailer = Swift_Mailer::newInstance($transport);
