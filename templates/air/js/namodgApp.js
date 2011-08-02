@@ -79,13 +79,36 @@
                     var randNums = field.prev().text().split(" + "),
 
                     // Do simple math :)
-                    	captcha = (Number(randNums[0]) + Number(randNums[1]));
+                    	captcha = +randNums[0]+ +randNums[1];
+                        
+                    // Converts an Arabic number to a normal, javascript int
+                        convertArNum = function (num) {
 
-                    // Return true if the value equals the captcha
-                    if(value == captcha)
-                        return true;
-                    else
-                        return false;
+                            var converted = 0,
+                                i, len;
+                            
+                            // Arabic zero in unicode = 1632
+                            for(i = 0, len = num.length; i < len; i++) {
+                                converted *= 10;
+                                converted += num.charAt(i).charCodeAt(0) - 1632;
+                            }
+
+                            return converted;
+
+                        }
+                    
+                    // Check for an Arabic number and convert them
+                    if ( /^[\u0660-\u0669]+$/.test(value) ) {
+                        
+                        value = convertArNum(value);
+                        
+                    } else { // Convert the string into an int
+                        
+                        value = +value;
+                        
+                    }
+                    
+                    return value === captcha; 
                 }
             });
 
