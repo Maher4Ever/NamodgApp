@@ -293,17 +293,19 @@ class NamodgApp {
         
         // Add NamodgApp header
         $message->getHeaders()->addTextHeader('X-Generator', 'NamodgApp v1.4');
-        	
-        try { // Try sending using sendmail
-            $transport = Swift_SendmailTransport::newInstance();
-            $mailer = Swift_Mailer::newInstance($transport);
-            $this->_emailSent = @$mailer->send($message);
-        } catch(Swift_TransportException $e) { // Can't use sendmail, try mail()
-            $transport = Swift_MailTransport::newInstance();  
-            $mailer = Swift_Mailer::newInstance($transport);
-            $this->_emailSent = @$mailer->send($message);  
+    
+        // Some servers disable proc_open(), which is used by Swift when 
+        // 'sendmail' transport is selected.
+        if ( function_exists('proc_open') ) {    
+            try { // Try sending using sendmail
+                $this->_sendUsingSendmail($message);
+            } catch(Swift_TransportException $e) { // Can't use sendmail, try mail()
+                $this->_sendUsingMail($message);
+            }
+        } else {
+            $this->_sendUsingMail($message);
         }
-		
+
         if ( ! $this->_emailSent ) {
                 @error_log('NamodgApp: mail() function is activated but unable to send emails. Please consult your server admins about this problem', 0);
         } else {
@@ -312,6 +314,28 @@ class NamodgApp {
         
     }
     
+    /**
+     * Sends an email using sendmail
+     * 
+     * @param Swift_Message $message
+     */
+    private function _sendUsingSendmail($message) {
+        $transport = Swift_SendmailTransport::newInstance();
+        $mailer = Swift_Mailer::newInstance($transport);
+        $this->_emailSent = @$mailer->send($message);
+    }
+
+    /**
+     * Sends an email using php's mail function
+     * 
+     * @param Swift_Message $message
+     */
+    private function _sendUsingMail($message) {
+        $transport = Swift_MailTransport::newInstance();  
+        $mailer = Swift_Mailer::newInstance($transport);
+        $this->_emailSent = @$mailer->send($message);  
+    }
+
     /**
      * Validates the fields after being added to the form
      */
